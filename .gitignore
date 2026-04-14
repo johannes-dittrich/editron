@@ -1,0 +1,21 @@
+# local state and secrets — never commit
+.env
+.env.*
+!.env.example
+
+# editron harness state (per-VM, machine-local)
+.local/share/editron/
+
+# docker / build artifacts
+node_modules/
+.next/
+dist/
+.turbo/
+
+# editor / os
+.DS_Store
+*.swp
+*.swo
+
+# logs
+*.log

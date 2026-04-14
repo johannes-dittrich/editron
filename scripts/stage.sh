@@ -19,6 +19,16 @@ SERVICE="web"
 MIRROR_REMOTE="mirror"
 PRODUCTION_ENV="production"
 
+# optional telegram notifier — no-op if scripts aren't present or creds missing
+notify() {
+  local msg="$1"
+  local notifier
+  notifier="$(dirname "${BASH_SOURCE[0]}")/telegram/notify.sh"
+  if [[ -x "$notifier" ]]; then
+    "$notifier" "$msg" 2>/dev/null || true
+  fi
+}
+
 usage() {
   sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
   exit "${1:-0}"
@@ -72,6 +82,7 @@ esac
 if (( destroy )); then
   printf '\033[1;33m→ destroying staging env %s\033[0m\n' "$slug"
   printf '%s\n' "$slug" | zin environment delete "$slug" -p "$PROJECT" 2>&1 || true
+  notify "🗑 staging env \`${slug}\` destroyed (branch \`${branch}\`)"
   echo "done."
   exit 0
 fi
@@ -128,6 +139,8 @@ for _ in $(seq 1 120); do
     failed|cancelled)
       printf '\n\033[1;31m✗ rollout %s\033[0m\n' "$st"
       zin service builds "$SERVICE" -e "$slug" --json | jq -r '.[0].lastLogLines[]' 2>/dev/null || true
+      notify "🔴 staging deploy *failed* — branch \`${branch}\` env \`${slug}\`
+run \`zin service builds ${SERVICE} -e ${slug}\` for logs"
       exit 1
       ;;
     *)
@@ -141,6 +154,9 @@ done
 url="$(zin service open "$SERVICE" -e "$slug" --json 2>/dev/null | jq -r .url || true)"
 if [[ -n "$url" && "$url" != "null" ]]; then
   printf '\n\033[1;32m🟢 %s → %s\033[0m\n' "$branch" "$url"
+  notify "🟢 staging *active* — branch \`${branch}\`
+${url}"
 else
   printf '\033[1;33m(could not resolve public URL — run: zin service open %s -e %s)\033[0m\n' "$SERVICE" "$slug"
+  notify "🟡 staging deployed but public URL unknown — env \`${slug}\` branch \`${branch}\`"
 fi
