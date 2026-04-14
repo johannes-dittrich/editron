@@ -53,9 +53,9 @@ through planner → implementer → reviewer. Add new tasks at the bottom.
 - [ ] Register a real custom domain (e.g. `editron.video`) and point it
       at the Azin endpoint via `zin domain`. Until then, the generated
       `*.up.azin.host` URL is the public face.
-- [ ] Enable auto-deploy on push (`zin service set source web --auto-deploy`)
-      once the repository layout is stable and we trust the pipeline to
-      not ship half-done commits.
+- [ ] Auto-deploy on push is **on** by default. Revisit once we have a real
+      review gate — currently every push to `johannes-dittrich/editron:main`
+      ships to production with no pre-check.
 - [ ] Decide whether to consolidate the mirror: today this repo pushes
       `setup/claude-harness` → `johannes-dittrich/editron:main` as a
       mirror for Azin. Either drop the mirror (once we make

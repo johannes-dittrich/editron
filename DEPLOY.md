@@ -41,20 +41,19 @@ target — for the real domain move to Azin.
 
 ## Re-deploying after a content change
 
-The live Azin service builds from `johannes-dittrich/editron` (mirror of this
-repo) main branch. To push an update:
+Auto-deploy on push is **on** — pushing to `johannes-dittrich/editron:main`
+triggers Azin to build and roll out a new version automatically. To publish
+an update:
 
 ```bash
-# 1. commit on setup/claude-harness in this repo, then mirror to main on the
-#    johannes-dittrich fork (Azin's source):
+# commit on setup/claude-harness in this repo, then mirror to main:
 git push mirror setup/claude-harness:main
-
-# 2. kick off a new Azin deploy:
-zin deploy run -e production
 ```
 
-The mirror remote is already configured in this clone. Auto-deploy on push is
-currently off — every publish is a manual `deploy run`.
+That's it. Azin picks up the webhook, runs the Dockerfile build, and rolls
+the new replica once healthy. Tail progress with
+`zin deploy status -e production`. No manual `zin deploy run` needed unless
+you've staged a config change (service settings, endpoint, resources).
 
 ## How the Azin service is wired (for reference)
 
