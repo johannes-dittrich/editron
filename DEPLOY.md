@@ -1,13 +1,27 @@
 # Deploying the Editron website
 
 The website lives in `website/` — a plain static site (HTML + CSS + JS, no build
-step). Two deploy targets are documented here: a temporary boxd proxy (currently
-serving) and the Azin CLI target (preferred; needs two one-time setup steps).
+step). Production serves from Azin via `@azin-tech/cli`. A boxd proxy mirror
+stays available as a fallback.
 
-## Current state — live on boxd proxy
+## Production — Azin (live)
 
-The site is currently served by nginx on this VM and exposed via the boxd
-proxy at:
+> **https://web-production-8c8f.4631dc.up.azin.host**
+
+- Project: `editron`  ·  Environment: `production`  ·  Service: `web` (App)
+- Source: `johannes-dittrich/editron` main branch, Dockerfile build from
+  `website/` context
+- Endpoint: HTTP:8080 behind CDN, public access, allocated domain
+- 1 replica, 0.5 vCPU / 512 MiB
+- `zin deploy status -e production` to check rollout; `zin service open web`
+  to open the live URL in a browser; `zin logs web -f -e production` to tail
+
+Auto-deploy on push is off by default — every push to `main` requires
+`zin deploy run -e production` to publish.
+
+## Fallback — boxd proxy
+
+An nginx on this VM also serves the site at:
 
 > **https://calm-wolf.boxd.sh/**
 
@@ -25,67 +39,67 @@ sudo nginx -t && sudo systemctl reload nginx
 Nginx is enabled via systemd and will start on boot. This is the temporary
 target — for the real domain move to Azin.
 
-## Target — Azin (`@azin-tech/cli`)
+## Re-deploying after a content change
 
-The Azin project is already created: `editron` (production environment).
-Config lives in `zin.json` at the repo root.
-
-### One-time setup (must be done in the Azin console)
-
-1. **Enable deploy permission on the API key**
-   - Open [console](https://cloud.azin.com) → Settings → API Keys
-   - Find the current key (`zin_k_90d4e9b7…`)
-   - Toggle "Deploy permission" to on
-   - *Why:* `zin whoami` currently reports `Deploy: disabled`, which blocks
-     `zin deploy run` regardless of other config.
-
-2. **Connect the GitHub org that owns the editron repo**
-   - Console → Settings → Connectors → GitHub
-   - Install the Azin GitHub app on the `mathisdittrich` org (the
-     `threetapsknowledge` connection already exists but doesn't cover this repo)
-   - *Why:* The App source needs a `connectionId` that can read
-     `mathisdittrich/editron`.
-
-### Deploy once setup is complete
-
-From this repo root:
+The live Azin service builds from `johannes-dittrich/editron` (mirror of this
+repo) main branch. To push an update:
 
 ```bash
-# stage a new App service built from the Dockerfile
-zin service create app \
-  --name web \
-  --repo mathisdittrich/editron \
-  --branch setup/claude-harness \
-  -e production
+# 1. commit on setup/claude-harness in this repo, then mirror to main on the
+#    johannes-dittrich fork (Azin's source):
+git push mirror setup/claude-harness:main
 
-# point it at the Dockerfile under website/
-zin service set source web \
-  --type github \
-  --dockerfile website/Dockerfile \
-  --context website \
-  -e production
-
-# give it a public endpoint on HTTP/8080 with CDN
-zin endpoint create web --port 8080 --public --cdn -e production
-
-# apply
+# 2. kick off a new Azin deploy:
 zin deploy run -e production
 ```
 
-`zin deploy status -e production` tails the build.
+The mirror remote is already configured in this clone. Auto-deploy on push is
+currently off — every publish is a manual `deploy run`.
 
-### Known CLI quirks (as of version installed 2026-04-14)
+## How the Azin service is wired (for reference)
+
+```bash
+# one-time, already applied:
+zin service create app --name web \
+  --repo ph79v2ktc03tv7y166c357m41984vprq \
+  --branch main -e production
+
+zin service set source web --type github \
+  --repo ph79v2ktc03tv7y166c357m41984vprq \
+  --branch main \
+  --build-type dockerfile \
+  --dockerfile Dockerfile \
+  --build-context website \
+  -e production
+
+zin endpoint add web --protocol http --port 8080 -e production
+zin endpoint set-public web --index 0 --enabled -e production
+zin endpoint set-cdn    web --index 0 --enabled -e production
+
+zin deploy run -e production
+```
+
+The `--dockerfile` path is **relative to the build context**, not to the repo
+root. Setting `--build-context website` + `--dockerfile website/Dockerfile`
+looks for `website/website/Dockerfile` and fails. Use `--dockerfile Dockerfile`.
+
+### Known CLI quirks encountered during setup
 
 - `zin service set bucket <name> --public-access --static-website` sends raw
   boolean values which the server rejects (`ArgumentValidationError` — the
   server expects `{type: "PublicRead"}` / `{type: "Enabled", indexPage: ...}`).
-  Workaround: configure bucket public-access / static-website via the web
-  console, or use an App service with the nginx Dockerfile (the documented path
-  above).
-- `zin repo list -e production` returns `repos is not iterable` when the
-  GitHub integration is installed on an org with zero connected repos.
+  Workaround: use an App service with the nginx Dockerfile instead of a static
+  bucket.
+- `zin repo list -e production` (non-JSON) returns `repos is not iterable`. The
+  `--json` variant works and returns a `.page[]` array.
 - API keys with `Deploy: disabled` silently succeed on staging commands but
-  fail on `deploy run`. The `zin whoami` flag is the source of truth.
+  fail on `deploy run`. `zin whoami` is the source of truth.
+- `zin connector github` generates an OAuth URL, but clicking it outside an
+  Azin console session can produce `Missing organization ID`. Start the
+  connector flow from the web console at https://console.azin.run/ instead.
+- The GitHub App that Azin installs is `azin-run` (slug). Installs must happen
+  under an account where the target repo lives; read-only permission is enough
+  for deploys.
 
 ## Dockerfile
 
@@ -108,3 +122,5 @@ service will build from.
 | Dockerfile                  | `website/Dockerfile`                           |
 | Local nginx config (live)   | `/etc/nginx/sites-available/editron`           |
 | Azin project link           | `zin.json` (`{"project": "editron"}`)          |
+| Azin live URL               | https://web-production-8c8f.4631dc.up.azin.host |
+| Azin source mirror          | `johannes-dittrich/editron` (main)             |

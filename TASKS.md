@@ -16,9 +16,11 @@ through planner → implementer → reviewer. Add new tasks at the bottom.
 - [x] Scaffold the landing site (`website/`) with landing, docs, pricing,
       and waitlist pages, styled in the elevenlabs.io direction.
 - [x] Serve the site on the boxd proxy via nginx at
-      https://calm-wolf.boxd.sh/ as the temporary live target.
-- [x] Prepare the Azin deploy path: project `editron` created, `zin.json`
-      linked, `website/Dockerfile` ready, blockers + exact deploy commands
+      https://calm-wolf.boxd.sh/ as a fallback target.
+- [x] Ship the site to production on Azin at
+      https://web-production-8c8f.4631dc.up.azin.host — App service `web`
+      building from `johannes-dittrich/editron` main via the `website/`
+      Dockerfile, HTTP:8080 behind CDN, 1 replica running. Full wiring
       written up in `DEPLOY.md`.
 
 ## Open — product
@@ -48,16 +50,18 @@ through planner → implementer → reviewer. Add new tasks at the bottom.
 
 ## Open — deploy
 
-- [ ] Enable deploy permission on the Azin API key in the console
-      (Settings → API Keys) and re-run `zin whoami` to confirm.
-- [ ] Install the Azin GitHub app on the `mathisdittrich` org so the
-      editron repo can be used as an App source.
-- [ ] After the two gates above, run the exact command sequence in
-      `DEPLOY.md` §"Deploy once setup is complete" and point the custom
-      domain at the new App endpoint.
-- [ ] Once Azin is live, retire the boxd proxy target: update links in
-      `README.md` and `DEPLOY.md`, but keep the nginx config in the repo
-      as a fallback.
+- [ ] Register a real custom domain (e.g. `editron.video`) and point it
+      at the Azin endpoint via `zin domain`. Until then, the generated
+      `*.up.azin.host` URL is the public face.
+- [ ] Enable auto-deploy on push (`zin service set source web --auto-deploy`)
+      once the repository layout is stable and we trust the pipeline to
+      not ship half-done commits.
+- [ ] Decide whether to consolidate the mirror: today this repo pushes
+      `setup/claude-harness` → `johannes-dittrich/editron:main` as a
+      mirror for Azin. Either drop the mirror (once we make
+      `mathisdittrich/editron` directly visible to Azin) or make the
+      mirror explicit by adding a thin `scripts/deploy.sh` that does the
+      push + `zin deploy run` in one step.
 
 ## Open — prototype
 
