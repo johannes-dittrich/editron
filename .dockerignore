@@ -1,0 +1,11 @@
+**/node_modules
+**/.next
+**/.turbo
+**/dist
+.git
+.github
+website
+video-use-main
+.env*
+**/.DS_Store
+plans
