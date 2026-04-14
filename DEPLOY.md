@@ -55,6 +55,36 @@ the new replica once healthy. Tail progress with
 `zin deploy status -e production`. No manual `zin deploy run` needed unless
 you've staged a config change (service settings, endpoint, resources).
 
+## Per-branch staging deployments
+
+Every branch other than `main` / `setup/claude-harness` can get its own Azin
+environment via `scripts/stage.sh`:
+
+```bash
+# from inside a feature branch:
+./scripts/stage.sh
+
+# or explicitly:
+./scripts/stage.sh feature/new-hero
+
+# teardown when the branch is merged or abandoned:
+./scripts/stage.sh --destroy feature/new-hero
+```
+
+What the script does:
+
+1. Mirrors the local branch to `johannes-dittrich/editron` (the Azin source).
+2. Forks the `production` environment into `staging-<slug>` on first run
+   (deep-clones services + config); re-uses it on subsequent runs.
+3. Points the `web` service at the target branch via `zin service set source`.
+4. Runs `zin deploy run` and waits for the rollout.
+5. Prints the public URL.
+
+The slug strips a leading `staging-` so `staging/new-hero` becomes
+`staging-new-hero` instead of `staging-staging-new-hero`. Branches
+`main`, `master`, `production`, and `setup/claude-harness` are rejected —
+they're production sources and staging them would collide.
+
 ## How the Azin service is wired (for reference)
 
 ```bash

@@ -22,6 +22,10 @@ through planner → implementer → reviewer. Add new tasks at the bottom.
       building from `johannes-dittrich/editron` main via the `website/`
       Dockerfile, HTTP:8080 behind CDN, 1 replica running. Full wiring
       written up in `DEPLOY.md`.
+- [x] Add per-branch staging deployments via `scripts/stage.sh` — forks
+      the production environment into `staging-<slug>` on first use,
+      re-points the web service at the target branch, runs the deploy,
+      and prints the public URL. Smoke-tested end-to-end.
 
 ## Open — product
 
