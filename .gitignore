@@ -1,0 +1,10 @@
+.turbo
+.next
+dist
+node_modules
+*.log
+.env
+apps/api/uploads
+apps/api/renders
+editron.db
+packages/db/editron.db
