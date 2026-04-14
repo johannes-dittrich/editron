@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Editron — Video editing by conversation</title>
+  <meta name="description" content="Editron edits video by conversation. Drop footage in a folder, chat with an AI editor, get a polished cut. No menus, no presets, no timelines." />
+  <meta property="og:title" content="Editron — Video editing by conversation" />
+  <meta property="og:description" content="Drop footage in a folder, chat with an AI editor, get a polished cut." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="logo" href="/">
+        <span class="logo-mark">◐</span>
+        <span class="logo-text">editron</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="pages/docs.html">Docs</a>
+        <a href="pages/pricing.html">Pricing</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="pages/docs.html">Read docs</a>
+        <a class="btn btn-primary" href="pages/waitlist.html">Join waitlist</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="container hero-inner">
+        <div class="chip">Early access · Claude Code skill</div>
+        <h1 class="hero-title">
+          Video editing<br />
+          <span class="gradient-text">by conversation.</span>
+        </h1>
+        <p class="hero-sub">
+          Drop footage in a folder. Describe what you want. Editron transcribes,
+          cuts, grades, subtitles, and animates — then iterates with you in plain
+          English until it's right.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="pages/waitlist.html">Join the waitlist →</a>
+          <a class="btn btn-ghost btn-lg" href="#how">See how it works</a>
+        </div>
+        <div class="hero-meta">
+          <span>●  Works with any footage</span>
+          <span>●  Talking heads, montages, tutorials, travel</span>
+          <span>●  No presets, no timelines</span>
+        </div>
+      </div>
+      <div class="hero-terminal">
+        <div class="term-head">
+          <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+          <span class="term-title">editron · ~/footage/launch</span>
+        </div>
+        <div class="term-body">
+          <div class="term-line"><span class="prompt">you</span> edit these clips into a 60s launch video</div>
+          <div class="term-line muted">→ inventorying 14 takes · transcribing · packing phrases</div>
+          <div class="term-line muted">→ reading takes_packed.md · drafting strategy</div>
+          <div class="term-line"><span class="prompt">editron</span> I see 4 hooks, 3 demo segments, and 2 CTAs.
+            Proposed shape: HOOK → PROBLEM → DEMO → CTA.
+            Warm cinematic grade, 2-word UPPERCASE subs. Confirm?</div>
+          <div class="term-line"><span class="prompt">you</span> yes — but punchier hook</div>
+          <div class="term-line muted">→ tightening hook · extracting segments · applying grade</div>
+          <div class="term-line muted">→ rendering overlays · subtitles last · final.mp4</div>
+          <div class="term-line ok">✓ edit/final.mp4 · 58.4s · ready to preview</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Everything that matters, encoded</div>
+          <h2 class="section-title">A production-grade cut,<br />from a conversation.</h2>
+          <p class="section-sub">Editron isn't a UI wrapped around ffmpeg. It's a reasoning loop that treats audio as primary, visuals as secondary, and taste as the thing you negotiate together.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <div class="card-icon">◐</div>
+            <h3>Word-level transcripts</h3>
+            <p>ElevenLabs Scribe with speaker diarization and audio events. Every cut snaps to a word boundary — no mid-syllable clips.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">◑</div>
+            <h3>Strategy before cuts</h3>
+            <p>Editron reads the material, proposes a shape in plain English, and waits for confirmation. No edits before you agree.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">◒</div>
+            <h3>Per-segment grading</h3>
+            <p>Lossless concat. 30ms audio fades. Overlays PTS-shifted. Subtitles last. The twelve hard rules of production-correct video, encoded.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">◓</div>
+            <h3>Parallel animations</h3>
+            <p>PIL, Manim, or Remotion — spawned as parallel sub-agents. Total wall time is the slowest one, not the sum.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">◔</div>
+            <h3>Social-ready loudness</h3>
+            <p>Two-pass EBU R128: -14 LUFS, -1 dBTP, LRA 11. Ships at the level every platform wants.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">◕</div>
+            <h3>Session memory</h3>
+            <p>Every session appends to project.md. Next week's cut picks up where you left off — no context reload.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">The loop</div>
+          <h2 class="section-title">Ask → confirm → execute → iterate.</h2>
+        </div>
+        <ol class="steps">
+          <li>
+            <div class="step-num">01</div>
+            <h3>Drop footage</h3>
+            <p>Any folder with <code>.mp4</code>, <code>.mov</code>, or <code>.mkv</code>. Editron walks the tree, probes every file, transcribes in parallel.</p>
+          </li>
+          <li>
+            <div class="step-num">02</div>
+            <h3>Describe what you want</h3>
+            <p>"Edit these into a launch video." "Tighten this tutorial." "Make it punchy." Editron asks the right questions — shaped by what it sees, not from a fixed form.</p>
+          </li>
+          <li>
+            <div class="step-num">03</div>
+            <h3>Approve the plan</h3>
+            <p>Four to eight sentences: shape, takes, cuts, grade, animations, subtitles, length. You confirm in plain English.</p>
+          </li>
+          <li>
+            <div class="step-num">04</div>
+            <h3>Preview &amp; iterate</h3>
+            <p>A 720p preview drops in your edit folder. Natural-language feedback reshapes the cut. Final render on the word <em>ship</em>.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta-inner">
+        <h2>Stop fighting the timeline.</h2>
+        <p>Editron is in early access. Join the waitlist to get a seat.</p>
+        <a class="btn btn-primary btn-lg" href="pages/waitlist.html">Join the waitlist →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="container foot-inner">
+      <div class="foot-brand">
+        <span class="logo-mark">◐</span>
+        <span class="logo-text">editron</span>
+        <span class="foot-tag">Video editing by conversation.</span>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="pages/pricing.html">Pricing</a>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <a href="pages/docs.html">Docs</a>
+          <a href="pages/waitlist.html">Waitlist</a>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="mailto:hello@editron.video">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="container foot-bottom">© 2026 Editron. All rights reserved.</div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
