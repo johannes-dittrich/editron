@@ -3,7 +3,17 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
+  --ink: #0a0a0a;
+  --ink-2: #1f1f24;
+  --ink-dim: #5a5a62;
+  --ink-soft: #8a8a93;
+  --paper: #ffffff;
+  --paper-alt: #f7f7f5;
+  --paper-warm: #faf7f2;
+  --line: rgba(10, 10, 10, 0.09);
+  --line-2: rgba(10, 10, 10, 0.16);
+  --accent: #ff5a1f;
 }
 
 html {
@@ -11,46 +21,39 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top center, rgba(255, 90, 0, 0.12), transparent 28%),
-    linear-gradient(180deg, #0a0a0a 0%, #090909 55%, #050505 100%);
-  color: #f4f4f5;
+  background: var(--paper);
+  color: var(--ink);
+  font-feature-settings: "ss01", "cv11", "cv02";
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
 }
 
 ::selection {
-  background: rgba(255, 90, 0, 0.3);
+  background: rgba(255, 90, 31, 0.22);
+  color: var(--ink);
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-}
-
-.surface-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
-  backdrop-filter: blur(14px);
-}
-
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 36px 36px;
+.device-shadow {
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(10, 10, 10, 0.06),
+    0 32px 64px -12px rgba(10, 10, 10, 0.12),
+    0 0 0 1px rgba(10, 10, 10, 0.06);
 }
 
 .text-balance {
   text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgba(10, 10, 10, 0.04) 1px, transparent 1px);
+  background-size: 80px 100%;
 }
