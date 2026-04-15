@@ -62,20 +62,20 @@ to the hard-check list. Every PR must pass it.
   `'false'`, MSW takes over; when `'true'`, the real API is used.
 
 ### M1.3 — Auth pages: /login and /signup
-- [ ] `/login`: email + password form, "Sign in with GitHub" button,
+- [x] `/login`: email + password form, "Sign in with GitHub" button,
   "Forgot password" ghost link. Client component. Form validation with
   Zod. Better-Auth client SDK call to `POST /api/auth/sign-in`. On
   success redirect to `/dashboard`. On error inline message in the
   brand tone ("those credentials don't match — try again").
-- [ ] `/signup`: same shape with email + password + name. On success
+- [x] `/signup`: same shape with email + password + name. On success
   redirect to `/dashboard` with a small "welcome to editron" toast.
-- [ ] Layout follows `plans/design-system.md`: centered single-column,
+- [x] Layout follows `plans/design-system.md`: centered single-column,
   max-w-sm form, serif headline "Sign in." / "Create account.", small
   eyebrow above, pill primary CTA, ghost link to the other auth flow
   at the bottom.
-- [ ] MSW handlers for `POST /api/auth/sign-in` and `POST /api/auth/sign-up`
+- [x] MSW handlers for `POST /api/auth/sign-in` and `POST /api/auth/sign-up`
   return fixtures during dev.
-- [ ] Playwright e2e for both flows, including error states.
+- [x] Playwright e2e for both flows, including error states.
 
 ### M1.4 — Dashboard
 - [ ] `/dashboard` server component that fetches `GET /api/projects` and

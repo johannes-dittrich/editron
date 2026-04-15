@@ -3,15 +3,13 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
   --ink: #0a0a0a;
   --ink-soft: #3a3a3a;
   --ink-dim: #6b6b6b;
   --paper: #fafaf7;
-  --paper-alt: #f4f4f2;
-  --white: #ffffff;
   --line: rgba(10, 10, 10, 0.14);
   --accent: #ff5a1f;
-  --accent-dark: #d94410;
 }
 
 html {
@@ -19,9 +17,9 @@ html {
 }
 
 body {
-  background-color: var(--paper);
+  background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
 }
 
 * {
@@ -31,4 +29,16 @@ body {
 ::selection {
   background: var(--ink);
   color: var(--paper);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(10, 10, 10, 0.2);
+  border-radius: 10px;
 }
