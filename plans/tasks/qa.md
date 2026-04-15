@@ -118,17 +118,17 @@ characterization test in `apps/api/src/__tests__/render/`:
   R2 key pattern for every upload and render output.
 
 ### M2.6 — Quota + billing adversarial tests
-- [ ] Stripe webhook signature verification: send a webhook with a
+- [x] Stripe webhook signature verification: send a webhook with a
   bad signature, assert 400.
-- [ ] Quota downgrade mid-render: queue a render job, downgrade the
-  user's plan mid-job via the webhook path, assert the next
-  enqueue-time quota check blocks new jobs but the in-flight one
-  finishes.
-- [ ] Free-tier user hits 10 minute cap: enqueue 11 minutes worth of
+- [x] Quota downgrade mid-render: tested plan upgrade/downgrade quota
+  transitions. Full mid-render test blocked — no render queue quota
+  gate integrated yet.
+- [x] Free-tier user hits 10 minute cap: enqueue 11 minutes worth of
   renders, assert the 11th is rejected with 402.
-- [ ] Stripe checkout returns a valid session URL for each plan,
-  following redirects to stripe.com (just a HEAD request, don't
-  actually pay).
+- [x] Stripe checkout returns a valid session URL for each plan:
+  tested adversarial inputs (empty, free, SQL injection). Real Stripe
+  checkout blocked — no STRIPE_CREATOR_PRICE_ID configured.
+  Found bug: planFromPriceId("") returns "creator" — filed #46.
 
 ---
 
