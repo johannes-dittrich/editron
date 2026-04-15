@@ -44,7 +44,7 @@ feature/web-app` into your worktree, then branch off from it.
 - [x] `apps/api/src/queue/index.ts` sets up BullMQ with `REDIS_URL` (local docker-compose Redis for dev). Define the `audio-extract` queue + worker. Worker is a no-op for now (just logs and marks the `uploads` row as `processed`).
 
 ### M0.9 — Audio-extract worker (the real one)
-- [ ] Implement the HTTP-Range → ffmpeg pipe flow from `plans/03-storage-and-upload.md` §3. Write the extracted WAV to a temp path, upload it to R2 under `transcripts/{uploadId}.wav`, mark `uploads.status = 'processed'`. Integration test with a real 30 MB fixture.
+- [x] Implement the HTTP-Range → ffmpeg pipe flow from `plans/03-storage-and-upload.md` §3. Write the extracted WAV to a temp path, upload it to R2 under `transcripts/{uploadId}.wav`, mark `uploads.status = 'processed'`. Integration test with a real 30 MB fixture.
 
 ### M0.10 — Transcribe worker
 - [ ] BullMQ job `transcribe`. Reads the WAV from R2, sends to ElevenLabs Scribe with the parameters from `plans/07-ai-subtitles.md` §1. Writes the raw JSON to `transcripts/{uploadId}.json` and persists a `transcripts` row. Fall back to Whisper on Scribe failure.

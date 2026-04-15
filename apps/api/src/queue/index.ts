@@ -1,7 +1,5 @@
 import { Queue, Worker, type Job, type ConnectionOptions } from "bullmq";
-import { db } from "@editron/db/client";
-import { uploads } from "@editron/db";
-import { eq } from "drizzle-orm";
+import { processAudioExtract } from "../workers/audio-extract.js";
 
 const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
 
@@ -36,15 +34,8 @@ export function startAudioExtractWorker(): Worker<AudioExtractJobData> {
   audioExtractWorker = new Worker<AudioExtractJobData>(
     "audio-extract",
     async (job: Job<AudioExtractJobData>) => {
-      const { uploadId } = job.data;
-      console.log(`[audio-extract] Processing upload ${uploadId}`);
-
-      await db
-        .update(uploads)
-        .set({ status: "processed" })
-        .where(eq(uploads.id, uploadId));
-
-      console.log(`[audio-extract] Marked upload ${uploadId} as processed`);
+      console.log(`[audio-extract] Processing upload ${job.data.uploadId}`);
+      await processAudioExtract(job.data);
     },
     { connection },
   );
