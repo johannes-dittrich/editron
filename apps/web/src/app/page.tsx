@@ -7,7 +7,7 @@ import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 
 export default function LandingPage() {
   return (
-    <main className="bg-paper text-ink">
+    <main className="overflow-x-hidden bg-paper text-ink">
       {/* nav */}
       <nav className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-6">
