@@ -49,16 +49,16 @@ to the hard-check list. Every PR must pass it.
   plans, all internal anchor links work.
 
 ### M1.2 — MSW (Mock Service Worker) scaffold
-- [ ] `pnpm --filter @editron/web add -D msw`
-- [ ] `apps/web/src/mocks/handlers.ts` with mock handlers for every V0
+- [x] `pnpm --filter @editron/web add -D msw`
+- [x] `apps/web/src/mocks/handlers.ts` with mock handlers for every V0
   endpoint: `GET /api/me`, `GET /api/projects`, `POST /api/projects`,
   `GET /api/projects/:id`, `POST /api/uploads/initiate`,
   `POST /api/uploads/:id/part-url`, `POST /api/uploads/:id/complete`.
-- [ ] Fixtures in `apps/web/src/mocks/fixtures/` — a couple of projects,
+- [x] Fixtures in `apps/web/src/mocks/fixtures/` — a couple of projects,
   a couple of uploads at various progress states.
-- [ ] `apps/web/src/mocks/browser.ts` + `apps/web/src/mocks/node.ts`
+- [x] `apps/web/src/mocks/browser.ts` + `apps/web/src/mocks/node.ts`
   split for client vs test environments.
-- [ ] Gate behind `NEXT_PUBLIC_USE_REAL_API` env flag — when unset or
+- [x] Gate behind `NEXT_PUBLIC_USE_REAL_API` env flag — when unset or
   `'false'`, MSW takes over; when `'true'`, the real API is used.
 
 ### M1.3 — Auth pages: /login and /signup
