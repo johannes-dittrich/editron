@@ -3,7 +3,15 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  --ink: #0a0a0a;
+  --ink-soft: #3a3a3a;
+  --ink-dim: #6b6b6b;
+  --paper: #fafaf7;
+  --paper-alt: #f4f4f2;
+  --white: #ffffff;
+  --line: rgba(10, 10, 10, 0.14);
+  --accent: #ff5a1f;
+  --accent-dark: #d94410;
 }
 
 html {
@@ -11,46 +19,16 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top center, rgba(255, 90, 0, 0.12), transparent 28%),
-    linear-gradient(180deg, #0a0a0a 0%, #090909 55%, #050505 100%);
-  color: #f4f4f5;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 * {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--line);
 }
 
 ::selection {
-  background: rgba(255, 90, 0, 0.3);
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 999px;
-}
-
-.surface-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
-  backdrop-filter: blur(14px);
-}
-
-.hero-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 36px 36px;
-}
-
-.text-balance {
-  text-wrap: balance;
+  background: var(--ink);
+  color: var(--paper);
 }
