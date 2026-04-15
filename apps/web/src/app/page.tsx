@@ -1,24 +1,16 @@
 import Link from "next/link";
 import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 
-// V4 — Editorial base (V1) with V3's split-hero layout and V3's hero copy
-// Fraunces serif for headlines, Inter body, light mode, impeccable.style
-// principles. Hero is now half copy / half product demo card.
-
 export default function LandingPage() {
   return (
     <main className="bg-paper text-ink">
       {/* nav */}
       <nav className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-6">
-          <a href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.png?v=2"
-              alt="Editron"
-              className="h-9 w-auto"
-            />
+          <div className="flex items-baseline gap-3">
             <span className="font-serif text-2xl italic tracking-tight">editron</span>
-          </a>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-ink-dim">issue 01</span>
+          </div>
           <div className="hidden items-center gap-8 text-sm text-ink-soft md:flex">
             <a href="#how" className="hover:text-ink">How it works</a>
             <a href="#pricing" className="hover:text-ink">Pricing</a>
@@ -33,10 +25,10 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* hero — V3 split layout with V1's editorial serif typography */}
-      <section className="border-b border-line">
+      {/* hero — split layout with editorial serif typography */}
+      <section className="overflow-x-clip border-b border-line">
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:py-32">
-          {/* copy side — serif, editorial */}
+          {/* copy side */}
           <div>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-3 py-1 text-[11px] text-ink-dim">
               <Sparkles className="h-3 w-3 text-accent" />
@@ -87,7 +79,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* demo side — V3 product demo card */}
+          {/* demo side — product demo card */}
           <div className="relative">
             <div className="overflow-hidden rounded-lg border border-ink/20 bg-white shadow-[0_40px_80px_-20px_rgba(10,10,10,0.15),0_0_0_1px_rgba(10,10,10,0.05)]">
               <div className="flex items-center gap-2 border-b border-line bg-paper-alt px-4 py-3">
@@ -153,14 +145,66 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* before / after */}
+      <section className="border-b border-line bg-white">
+        <div className="mx-auto max-w-6xl px-8 py-24">
+          <div className="mb-16 max-w-xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">A raw take, an edit</p>
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
+              You see the words.<br />
+              Editron sees <span className="italic">the cuts</span>.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Before — raw transcript</p>
+              <div className="border border-line bg-paper p-6 font-mono text-sm leading-relaxed text-ink-soft">
+                <p>
+                  <span className="text-ink-dim">[00:02]</span> So, um, ninety percent —{" "}
+                  <span className="line-through decoration-ink/40">no sorry, let me start over —</span> ninety
+                  percent of what a web agent does is, you know, completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:11]</span>{" "}
+                  <span className="line-through decoration-ink/40">Uh, so what we did —</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:14]</span>{" "}
+                  <span className="line-through decoration-ink/40">Um,</span> Editron reasons on the audio first,
+                  then the visuals follow.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">After — the cut</p>
+              <div className="border border-ink bg-ink p-6 font-mono text-sm leading-relaxed text-paper">
+                <p>
+                  <span className="text-paper/50">[00:00]</span> Ninety percent of what a web agent does is
+                  completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:06]</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:08]</span> Editron reasons on the audio first, then the
+                  visuals follow.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* how it works */}
-      <section id="how" className="border-b border-line bg-white">
+      <section id="how" className="border-b border-line">
         <div className="mx-auto max-w-6xl px-8 py-24">
           <div className="mb-16 max-w-xl">
             <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">The workflow</p>
             <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
-              From raw clips to final export<br />
-              in <span className="italic">three steps</span>.
+              Three steps,<br />
+              none of them <span className="italic">clicking</span>.
             </h2>
           </div>
 
@@ -213,58 +257,6 @@ export default function LandingPage() {
               </div>
             </li>
           </ol>
-        </div>
-      </section>
-
-      {/* before / after */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-6xl px-8 py-24">
-          <div className="mb-16 max-w-xl">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">A raw take, an edit</p>
-            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
-              You see the words.<br />
-              Editron sees the cuts.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            <div>
-              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Before — raw transcript</p>
-              <div className="border border-line bg-paper p-6 font-mono text-sm leading-relaxed text-ink-soft">
-                <p>
-                  <span className="text-ink-dim">[00:02]</span> So, um, ninety percent —{" "}
-                  <span className="line-through decoration-ink/40">no sorry, let me start over —</span> ninety
-                  percent of what a web agent does is, you know, completely wasted.
-                </p>
-                <p className="mt-3">
-                  <span className="text-ink-dim">[00:11]</span>{" "}
-                  <span className="line-through decoration-ink/40">Uh, so what we did —</span> We fixed this.
-                </p>
-                <p className="mt-3">
-                  <span className="text-ink-dim">[00:14]</span>{" "}
-                  <span className="line-through decoration-ink/40">Um,</span> Editron reasons on the audio first,
-                  then the visuals follow.
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">After — the cut</p>
-              <div className="border border-ink bg-ink p-6 font-mono text-sm leading-relaxed text-paper">
-                <p>
-                  <span className="text-paper/50">[00:00]</span> Ninety percent of what a web agent does is
-                  completely wasted.
-                </p>
-                <p className="mt-3">
-                  <span className="text-paper/50">[00:06]</span> We fixed this.
-                </p>
-                <p className="mt-3">
-                  <span className="text-paper/50">[00:08]</span> Editron reasons on the audio first, then the
-                  visuals follow.
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -358,11 +350,8 @@ export default function LandingPage() {
 
       {/* footer */}
       <footer>
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-8 py-12 md:flex-row md:items-center">
-          <div className="flex items-center gap-3">
-            <img src="/logo.png?v=2" alt="Editron" className="h-10 w-auto opacity-70" />
-            <p className="font-serif italic text-ink-dim">editron</p>
-          </div>
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-8 py-12 md:flex-row">
+          <p className="font-serif italic text-ink-dim">editron — issue 01</p>
           <p className="text-sm text-ink-dim">© 2026 Editron. All rights reserved.</p>
         </div>
       </footer>
