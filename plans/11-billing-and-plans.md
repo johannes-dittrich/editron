@@ -1,71 +1,66 @@
-# 11 — Billing, Subscriptions & Usage Limits
+# 11 — Billing & Plans
 
 ## Goal
-Monetization via tiered subscriptions with usage-based limits on storage, exports, and AI features.
+A user signs up, gets a free tier, upgrades to Creator ($24/mo) or Studio
+($96/mo) via Stripe Checkout, and the API enforces their usage limits.
+
+## Plans (V0)
+
+| Plan | $ / mo | Render minutes | Concurrent projects | Export quality |
+|---|---|---|---|---|
+| Free | 0 | 10 | 1 | 720p |
+| Creator | 24 | 600 | unlimited | 1080p / 4K |
+| Studio | 96 | 2400 | unlimited | 1080p / 4K + brand kits |
+
+Limits are soft for the first month; we log overages but don't block.
+After month 1, overages hard-block the render queue and return a `402`
+with a link to upgrade.
 
 ---
 
 ## Tasks
 
-### 11.1 Pricing Tiers
+### 1 — Stripe integration
+- [ ] `pnpm --filter @editron/api add stripe`
+- [ ] `apps/api/src/billing/stripe.ts` — initialized Stripe client
+- [ ] `POST /api/billing/checkout` — creates a Checkout session for the
+      selected plan; returns the URL. User redirects.
+- [ ] `POST /api/billing/portal` — creates a customer portal session
+      for self-service cancellation / upgrade / payment method
+- [ ] Webhook handler at `POST /api/billing/webhook`
+  - `checkout.session.completed` → set `users.stripeCustomerId`, set `plan`
+  - `customer.subscription.updated` → update `plan`
+  - `customer.subscription.deleted` → downgrade to `free`
+  - `invoice.payment_failed` → mark account as `past_due` (new column)
+- [ ] All handlers verify the webhook signature with `STRIPE_WEBHOOK_SECRET`
 
-**Free**
-- 2 projects
-- 500MB storage
-- 720p max export
-- 5 AI operations/month
-- Editron watermark on exports
+### 2 — Usage tracking
+- [ ] `usage_events` table: `id`, `userId`, `kind` (render_minutes | transcribe_minutes | storage_gb_hours), `amount`, `createdAt`
+- [ ] Every render job emits a row on completion
+- [ ] `GET /api/usage/current` sums the current billing cycle per kind
 
-**Pro ($19/mo)**
-- Unlimited projects
-- 50GB storage
-- 4K export
-- 100 AI operations/month
-- No watermark
-- Priority render queue
+### 3 — Quota enforcement
+- [ ] `apps/api/src/billing/quota.ts` — functions `canRender`, `canTranscribe` that read usage + plan, return `{allowed, remaining, reason}`
+- [ ] Called at the enqueue step of each job, not at run time (so users see the failure immediately)
 
-**Business ($49/mo)**
-- Everything in Pro
-- 500GB storage
-- Unlimited AI operations
-- Team collaboration (up to 5 seats)
-- Custom branding on exports
-- API access
-- Priority support
+### 4 — UI
+- [ ] `/pricing` page on the marketing site (already exists in the
+      landing variants — picked during Phase 1)
+- [ ] `/settings/billing` in the dashboard — shows current plan, usage
+      bars, upgrade button, cancel button (opens customer portal)
 
-### 11.2 Stripe Integration
-- [ ] Stripe Checkout for subscription signup
-- [ ] Stripe Customer Portal for plan management
-- [ ] Webhook handlers: subscription created/updated/cancelled
-- [ ] Usage tracking (AI operations, storage, exports)
-- [ ] Metered billing option for overages
-- [ ] Promo codes / discounts
-- [ ] Annual billing discount (2 months free)
-
-### 11.3 Usage Enforcement
-- [ ] Middleware to check plan limits before operations
-- [ ] Storage quota tracking per user
-- [ ] AI operations counter (reset monthly)
-- [ ] Export resolution gating by plan
-- [ ] Upgrade prompts when hitting limits
-- [ ] Grace period for downgraded users
-
-### 11.4 Billing UI
-- [ ] Pricing page (public)
-- [ ] Account billing page (current plan, usage, invoices)
-- [ ] Plan comparison table
-- [ ] Upgrade/downgrade flow
-- [ ] Invoice history + PDF download
+### 5 — Tests
+- [ ] Webhook handler tests with fixtures from Stripe CLI
+- [ ] Quota enforcement unit tests
+- [ ] Full E2E in staging with Stripe test mode
 
 ---
 
-## Keys Needed
-- Stripe publishable key
-- Stripe secret key
-- Stripe webhook secret
+## Notes
 
-## Depends On
-- 02-auth-and-database (user accounts)
-
-## Estimated Effort
-~4-5 days
+- **Free tier credit card**: NOT required. Free users sign up with email,
+  get a 10-min quota, upgrade when they want more. No friction.
+- **Annual plans**: defer until we have real users (Phase 5).
+- **Taxes**: Stripe Tax handles this. We enable it before public launch.
+- **Team seats**: Studio plan includes 5 seats. Seat management is
+  Phase 4 along with team workspaces.
