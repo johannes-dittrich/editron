@@ -39,7 +39,7 @@ export default function LandingPage() {
               An AI video editor for people who write
             </div>
 
-            <h1 className="font-serif text-[clamp(2.75rem,5.8vw,5.75rem)] font-normal leading-[0.95] tracking-tightest text-ink">
+            <h1 className="font-serif text-[clamp(2rem,4.4vw,4.5rem)] font-normal leading-[0.95] tracking-tightest text-ink">
               Drop the footage.<br />
               Describe the cut.<br />
               <span className="italic">Ship the video.</span>
