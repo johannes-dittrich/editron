@@ -1,0 +1,79 @@
+# COORDINATION.md
+
+Cross-track message board. Every agent reads this at the start of
+every tick and **writes** to it when they finish a task that affects
+another track, or when they're blocked waiting on another track.
+
+## How to use
+
+- **At the start of every tick**: read this file. Look at the section
+  for your track (blocked items, pending inputs from others).
+- **When you finish a task that unblocks another track**: append a
+  message under that track's section with the form:
+  ```
+  - [YYYY-MM-DDTHH:MM:SSZ from=<your-track>] <what you unblocked>
+  ```
+- **When you are blocked waiting on another track**: append a message
+  under your own section. Once the other track delivers, they move
+  the message to a "resolved" list below.
+- **Never delete messages**. Move resolved ones to the "archive" at
+  the bottom instead. This is the team's audit trail.
+
+## Sections
+
+Each track has two sections: `inbox` (things pending from others) and
+`outbox` (things you promised and will deliver). Keep both short.
+
+---
+
+## backend inbox
+(messages waiting on backend from other tracks)
+
+## backend outbox
+(things backend has promised to deliver)
+
+- [2026-04-15 from=human] Deploy apps/api as a second Azin service.
+  Required for frontend/M3.4, qa/M3.6. See PLAN.md §Phase 1.5.
+
+---
+
+## frontend inbox
+(things frontend needs from others before proceeding)
+
+- [2026-04-15 from=human] WAITING ON backend/M3.2 to publish the api
+  service URL. Frontend/M3.4 cannot proceed until the api URL is
+  known. Once backend appends the URL under "api-url-available",
+  frontend wires NEXT_PUBLIC_API_URL and disables MSW.
+
+## frontend outbox
+(things frontend has promised to deliver)
+
+- [2026-04-15 from=human] Wire web/apps to use NEXT_PUBLIC_API_URL
+  when set. Required for qa/M3.6 smoke tests.
+
+---
+
+## qa inbox
+(things qa needs from others before proceeding)
+
+- [2026-04-15 from=human] WAITING ON backend/M3.2 (api URL) AND
+  frontend/M3.4 (real-api flag flipped) before M3.6 end-to-end tests
+  can run. Start with M2.x items in the meantime.
+
+## qa outbox
+(things qa has promised to deliver)
+
+---
+
+## api-url-available
+
+Once the backend deploys the api service and has a public URL, append
+it here with the date. Frontend polls this section every tick to
+unblock M3.4.
+
+(empty — waiting for backend to fill this in)
+
+---
+
+## archive
+(resolved items from all tracks, most recent first)

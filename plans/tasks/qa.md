@@ -146,3 +146,30 @@ characterization test in `apps/api/src/__tests__/render/`:
 
 ## Blocked
 (none yet)
+
+
+---
+
+## Milestone M3 — MVP Verification (see plans/15-mvp-deploy.md)
+
+### M3.6 — End-to-end smoke test against real infrastructure
+- [ ] Read `COORDINATION.md` §api-url-available AND look for a `frontend wired to real api` entry in §archive. If either is missing, write a blocker under `## qa inbox` and exit the tick. Otherwise continue.
+- [ ] Playwright test in `apps/web/e2e/staging/mvp-smoke.spec.ts` that runs against `process.env.STAGING_URL` (default: the production web URL):
+  1. Navigate to `/signup`, fill a random test email + password, submit. Expect redirect to `/dashboard`.
+  2. Click "New project". Enter a title. Paste a YouTube URL as the reference. Next.
+  3. Brief: "a test clip for the mvp smoke test". Next.
+  4. Step 3: drop `test-fixtures/10s-colorbars.mp4` (generate via ffmpeg in a `beforeAll` if absent). Wait for the upload row to reach 100%. Click "Open project".
+  5. On `/projects/[id]`, wait up to 90 seconds for at least one upload to transition from `ingesting` to `ready`.
+  6. Open the transcript side panel. Assert at least one word span is visible.
+  7. Click a word span to mark a cut. Verify the selection UI updates.
+  8. Click "Render preview". Wait up to 120 seconds for a downloadable mp4 URL to appear.
+  9. HEAD the URL to confirm it's reachable.
+- [ ] After the test passes, append an entry to `COORDINATION.md §archive`: `MVP smoke test green against <url>`.
+- [ ] If the test fails, open a GitHub issue with the appropriate track label (`backend`, `frontend`) and a one-paragraph reproduction. Mark the test `.skip()` with the issue number.
+
+### M3.7b — QA adversarial tests for V0
+- [ ] signup-with-existing-email returns 409 in the UI
+- [ ] upload a 1 KB file, verify the drop zone rejects it before the api is called
+- [ ] refresh the page mid-upload, verify the "resume" banner appears
+- [ ] quota-exceeded: mock the user plan to "free" with 10 used minutes, try to render, expect 402
+- [ ] visit `/projects/[id]` with a deleted project id, expect 404 redirect to dashboard

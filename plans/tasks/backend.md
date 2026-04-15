@@ -103,3 +103,43 @@ feature/web-app` into your worktree, then branch off from it.
 
 ## Blocked
 (none yet)
+
+---
+
+## Milestone M3 — MVP Deploy (see plans/15-mvp-deploy.md)
+
+### M3.1 — Dockerfile for apps/api
+- [ ] Write `apps/api/Dockerfile` (single-stage, node 20 alpine, `corepack enable pnpm@9.15.0`, install workspace deps, build `@editron/api`, start command `pnpm --filter @editron/api start`). Expose 8080. Health check at `/api/health`. Verify local `docker build` + `docker run` works.
+
+### M3.2 — Create and configure Azin api service
+- [ ] `zin service create app --name api` in the production environment (use `-p editron -e production`). Set source to johannes-dittrich/editron mirror, branch main, dockerfile `apps/api/Dockerfile`, build context `.`. Add HTTP endpoint on 8080, public, CDN disabled. Set every required env var via `zin service set env api`: `DATABASE_URL`, `REDIS_URL`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`, `R2_BUCKET`, `R2_REGION`, `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `BETTER_AUTH_SECRET` (generate a fresh 32-byte hex string), `BETTER_AUTH_URL` (the api allocated domain), `STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `NODE_ENV=production`. Read values from `~/.config/editron/secrets.env` on this VM via the orchestrator. Run `zin deploy run -p editron -e production` and wait for active. **When the api is live, write the allocated public URL under `## api-url-available` in `COORDINATION.md` so frontend and qa are unblocked.**
+
+### M3.3 — Schema push + healthcheck
+- [ ] After api is active, run `zin exec` or a local one-off to execute `pnpm --filter @editron/db db:push` against prod `DATABASE_URL`. Then curl the api health endpoint. Expect `{status:"ok", db:"ok", redis:"ok"}`. If any fails, fix and redeploy.
+
+### M3.5 — Stripe webhook registration
+- [ ] Register a webhook in the Stripe dashboard (test mode) pointing at `<api_public_url>/api/billing/webhook`. Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`. Copy the signing secret. Write an entry in `COORDINATION.md` §archive with `STRIPE_WEBHOOK_SECRET needs to be added to secrets.env on orchestrator + zin service set env api STRIPE_WEBHOOK_SECRET=...`. Since you cannot edit the orchestrator VM directly, file the step as a human-action note and continue.
+
+### M3.7a — Backends
+
+
+---
+
+## Milestone M3 — MVP Deploy (see plans/15-mvp-deploy.md)
+
+### M3.1 — Dockerfile for apps/api
+- [ ] Write `apps/api/Dockerfile` (single-stage, node 20 alpine, `corepack enable pnpm@9.15.0`, install workspace deps, build `@editron/api`, start command `pnpm --filter @editron/api start`). Expose 8080. Health check at `/api/health`. Verify local `docker build` + `docker run` works.
+
+### M3.2 — Create and configure Azin api service
+- [ ] `zin service create app --name api` in the production environment (use `-p editron -e production`). Set source to johannes-dittrich/editron mirror, branch main, dockerfile `apps/api/Dockerfile`, build context `.`. Add HTTP endpoint on 8080, public, CDN disabled. Set every required env var via `zin service set env api`: `DATABASE_URL`, `REDIS_URL`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ENDPOINT`, `R2_BUCKET`, `R2_REGION`, `OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `BETTER_AUTH_SECRET` (generate a fresh 32-byte hex string), `BETTER_AUTH_URL` (the api allocated domain), `STRIPE_PUBLISHABLE_KEY`, `STRIPE_SECRET_KEY`, `NODE_ENV=production`. Read values from `~/.config/editron/secrets.env` on this VM via the orchestrator. Run `zin deploy run -p editron -e production` and wait for active. **When the api is live, write the allocated public URL under `## api-url-available` in `COORDINATION.md` so frontend and qa are unblocked.**
+
+### M3.3 — Schema push + healthcheck
+- [ ] After api is active, run `zin exec` or a local one-off to execute `pnpm --filter @editron/db db:push` against prod `DATABASE_URL`. Then curl the api health endpoint. Expect `{status:"ok", db:"ok", redis:"ok"}`. If any fails, fix and redeploy.
+
+### M3.5 — Stripe webhook registration
+- [ ] Register a webhook in the Stripe dashboard (test mode) pointing at `<api_public_url>/api/billing/webhook`. Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`. Copy the signing secret. Since you cannot edit the orchestrator VM directly, file a `## needs-human` note in COORDINATION.md asking the human to add `STRIPE_WEBHOOK_SECRET` to the orchestrator secrets file and to the `api` service env.
+
+### M3.7a — Backend error-path tests against real infra
+- [ ] Integration test: POST /api/auth/sign-up twice with the same email, expect 409 on the second.
+- [ ] Integration test: POST /api/uploads/initiate with a 500-byte file, expect 400 "invalid video".
+- [ ] Integration test: request a render for an unapproved EDL, expect 400.

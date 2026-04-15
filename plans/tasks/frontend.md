@@ -177,3 +177,17 @@ dialog. See `plans/05-timeline-editor.md` for the scope._
 
 ## Blocked
 (none yet)
+
+
+---
+
+## Milestone M3 — MVP Wiring (see plans/15-mvp-deploy.md)
+
+### M3.4 — Wire web to the real api
+- [ ] Read `COORDINATION.md` §api-url-available. If it is empty, write a blocker under `## frontend inbox` and exit the tick. If it has a URL, continue.
+- [ ] Add an `apps/web/src/lib/api-url.ts` helper that resolves the base URL from `process.env.NEXT_PUBLIC_API_URL`. When unset, default to an empty string (same-origin, which is what MSW expects).
+- [ ] Update every `fetch("/api/...")` call in auth forms, dashboard, wizard, and project detail to use the helper: `fetch(`${apiUrl()}/api/...`)`. Keep the paths relative so same-origin still works in dev.
+- [ ] Update `apps/web/src/components/msw-provider.tsx` to only start MSW when `process.env.NEXT_PUBLIC_USE_REAL_API !== "true"`.
+- [ ] Update the Azin `web` service env vars: `NEXT_PUBLIC_API_URL=<value from COORDINATION.md>`, `NEXT_PUBLIC_USE_REAL_API=true`. Trigger a redeploy via `git push` on the mirror branch or `zin deploy run -p editron -e production`.
+- [ ] After the web deploy goes active, append an entry to `COORDINATION.md §archive`: `frontend wired to real api at <url> · MSW disabled in prod` and a `resolved` note referencing the inbox item.
+- [ ] E2E sanity: open the production web URL in curl and verify a fetch against `<api-url>/api/health` works cross-origin (CORS must be configured on the api — if not, file a backend issue with label `backend` referencing M3.2).
