@@ -111,10 +111,10 @@ characterization test in `apps/api/src/__tests__/render/`:
 - [ ] Rule 10 — parallel animations: characterize the BullMQ job
   dispatch for multiple overlays, assert they're enqueued in the
   same tick (not sequential).
-- [ ] Rule 11 — strategy confirmation before execution: assert the
+- [x] Rule 11 — strategy confirmation before execution: assert the
   text-to-edit endpoint refuses to emit an EDL without a prior
-  approved strategy.
-- [ ] Rule 12 — all outputs under user's project prefix: assert the
+  approved strategy. NOTE: NOT ENFORCED — filed #42.
+- [x] Rule 12 — all outputs under user's project prefix: assert the
   R2 key pattern for every upload and render output.
 
 ### M2.6 — Quota + billing adversarial tests
