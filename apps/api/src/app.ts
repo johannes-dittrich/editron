@@ -5,6 +5,7 @@ import { db } from "@editron/db/client";
 import { sql } from "drizzle-orm";
 import { registerAuthRoutes } from "./routes/auth.js";
 import { registerProjectRoutes } from "./routes/projects.js";
+import { registerUploadRoutes } from "./routes/uploads.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -30,6 +31,7 @@ export async function buildApp() {
 
   await registerAuthRoutes(app);
   await registerProjectRoutes(app);
+  await registerUploadRoutes(app);
 
   return app;
 }

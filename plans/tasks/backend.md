@@ -35,10 +35,10 @@ feature/web-app` into your worktree, then branch off from it.
 - [x] `GET /api/projects`, `POST /api/projects`, `GET /api/projects/:id`, `PATCH /api/projects/:id`, `DELETE /api/projects/:id`. All session-gated. Unit tests against a test DB (vitest + pg-mem or a test Neon branch).
 
 ### M0.6 — R2 client
-- [ ] `packages/shared/src/r2.ts` exports a typed `@aws-sdk/client-s3` client configured against the R2 endpoint in the env. Helper `getObjectKey(userId, projectId, kind, uploadId, filename)` matching the schema in `plans/03-storage-and-upload.md`.
+- [x] `packages/shared/src/r2.ts` exports a typed `@aws-sdk/client-s3` client configured against the R2 endpoint in the env. Helper `getObjectKey(userId, projectId, kind, uploadId, filename)` matching the schema in `plans/03-storage-and-upload.md`.
 
 ### M0.7 — Multipart upload endpoints
-- [ ] `POST /api/uploads/initiate` / `POST /api/uploads/:id/part-url` / `POST /api/uploads/:id/complete` / `POST /api/uploads/:id/abort`. Each session-gated and project-scoped. Integration test: upload a 20 MB fixture end-to-end against real R2 under a `test/` prefix.
+- [x] `POST /api/uploads/initiate` / `POST /api/uploads/:id/part-url` / `POST /api/uploads/:id/complete` / `POST /api/uploads/:id/abort`. Each session-gated and project-scoped. Integration test: upload a 20 MB fixture end-to-end against real R2 under a `test/` prefix.
 
 ### M0.8 — BullMQ scaffold
 - [ ] `apps/api/src/queue/index.ts` sets up BullMQ with `REDIS_URL` (local docker-compose Redis for dev). Define the `audio-extract` queue + worker. Worker is a no-op for now (just logs and marks the `uploads` row as `processed`).
