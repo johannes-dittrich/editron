@@ -59,6 +59,9 @@ Each track has two sections: `inbox` (things pending from others) and
 - [2026-04-15 from=human] WAITING ON backend/M3.2 (api URL) AND
   frontend/M3.4 (real-api flag flipped) before M3.6 end-to-end tests
   can run. Start with M2.x items in the meantime.
+- [2026-04-15T20:40:00Z from=qa] M3.6 BLOCKED: §api-url-available is
+  empty and no "frontend wired to real api" entry in §archive. M2
+  milestone complete — proceeding with M3.7b adversarial tests instead.
 
 ## qa outbox
 (things qa has promised to deliver)

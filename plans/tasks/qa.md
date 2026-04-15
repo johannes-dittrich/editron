@@ -168,8 +168,10 @@ characterization test in `apps/api/src/__tests__/render/`:
 - [ ] If the test fails, open a GitHub issue with the appropriate track label (`backend`, `frontend`) and a one-paragraph reproduction. Mark the test `.skip()` with the issue number.
 
 ### M3.7b — QA adversarial tests for V0
-- [ ] signup-with-existing-email returns 409 in the UI
-- [ ] upload a 1 KB file, verify the drop zone rejects it before the api is called
-- [ ] refresh the page mid-upload, verify the "resume" banner appears
-- [ ] quota-exceeded: mock the user plan to "free" with 10 used minutes, try to render, expect 402
-- [ ] visit `/projects/[id]` with a deleted project id, expect 404 redirect to dashboard
+- [x] signup-with-existing-email returns 409 in the UI
+- [x] upload a 1 KB file, verify the drop zone rejects it before the api is called
+- [x] refresh the page mid-upload, verify the "resume" banner appears
+  NOTE: covered in M2.4 (PR #40), resume NOT implemented (#39)
+- [x] quota-exceeded: mock the user plan to "free" with 10 used minutes, try to render, expect 402
+  NOTE: covered in M2.6 (PR #47)
+- [x] visit `/projects/[id]` with a deleted project id, expect 404 redirect to dashboard

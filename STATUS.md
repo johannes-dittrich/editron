@@ -9,4 +9,5 @@
 2026-04-15T09:37:24Z frontend M1.7 design regression baseline — 8 visual screenshots, test:visual script https://github.com/mathisdittrich/editron/pull/25
 2026-04-15T19:45:13Z qa M2.3 full-flow e2e — 5 tests: signup→wizard→upload→ingest-row→rotating-messages https://github.com/mathisdittrich/editron/pull/38
 2026-04-15T20:18:10Z qa M2.5 Rules 11+12 — strategy gate (bug #42) + prefix isolation (9 tests) https://github.com/mathisdittrich/editron/pull/43
-2026-04-15T20:34:12Z qa M2.6 billing adversarial — 15 tests, found planFromPriceId bug (#46) PENDING_PR
+2026-04-15T20:34:12Z qa M2.6 billing adversarial — 15 tests, found planFromPriceId bug (#46) https://github.com/mathisdittrich/editron/pull/47
+2026-04-15T20:45:53Z qa M3.6 BLOCKED (no api URL), M3.7b adversarial V0 — 5 tests PENDING_PR
