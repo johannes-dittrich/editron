@@ -7,3 +7,4 @@
 2026-04-15T03:10:00Z backend M0.7 Multipart uploads — 4 endpoints (initiate/part-url/complete/abort), e2e R2 test, 9 integration tests https://github.com/mathisdittrich/editron/pull/7
 2026-04-15T03:22:00Z backend M0.8 BullMQ scaffold — audio-extract queue + no-op worker, docker-compose Redis, graceful shutdown https://github.com/mathisdittrich/editron/pull/8
 2026-04-15T09:37:24Z frontend M1.7 design regression baseline — 8 visual screenshots, test:visual script https://github.com/mathisdittrich/editron/pull/25
+2026-04-15T17:43:46Z frontend M1.1 rebased — landing mobile fix + 8 e2e tests, replaces closed PR #13 https://github.com/mathisdittrich/editron/pull/28
