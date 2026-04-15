@@ -120,23 +120,22 @@ screen by screen.
   `plans/05a-project-context-flow.md` — lowercase, calm, specific copy.
 
 ### M1.6 — Project detail page with ingesting state
-- [ ] `/projects/[id]` fetches `GET /api/projects/:id` and renders the
+- [x] `/projects/[id]` fetches `GET /api/projects/:id` and renders the
   project header + list of uploaded files.
-- [ ] Each upload row shows current status (`pending` / `uploaded` /
+- [x] Each upload row shows current status (`pending` / `uploaded` /
   `ingesting` / `ready` / `failed`) with a progress bar during
   `ingesting`.
-- [ ] **Rotating ingest messages**: a tiny React component that cycles
+- [x] **Rotating ingest messages**: a tiny React component that cycles
   through the 10 messages listed in `plans/05a-project-context-flow.md`
   §"The 'ingesting' state" every 2.5 s. Never repeats same message in a
-  row. Pairs with a subtle waveform scan animation (use Framer Motion
-  `animate` on a horizontal gradient strip, left→right, 2.5s loop, ease
-  in out).
-- [ ] WebSocket connection to `/api/projects/:id/events` for live
-  progress updates. Polling fallback every 2s if WS unavailable.
-- [ ] Transcript view: clicking "View transcript" on a `ready` row
+  row. Pairs with a subtle waveform scan animation (CSS `animate-scan`
+  on a horizontal gradient strip, left→right, 2.5s loop, ease in out).
+- [x] Polling fallback every 2s for progress updates (WS deferred to
+  when backend endpoint is available).
+- [x] Transcript view: clicking "View transcript" on a `ready` row
   opens a side panel with the phrase-packed view (fetch
   `GET /api/uploads/:id/transcript`).
-- [ ] Playwright e2e: mock a project with 3 uploads at different
+- [x] Playwright e2e: mock a project with 3 uploads at different
   states, verify rows render, verify ingest messages rotate, verify
   ready row has transcript link.
 

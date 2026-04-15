@@ -33,6 +33,15 @@ const config: Config = {
         tightest: "-0.045em",
         tightish: "-0.02em",
       },
+      keyframes: {
+        scan: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
+      },
+      animation: {
+        scan: "scan 2.5s ease-in-out infinite",
+      },
     },
   },
   plugins: [],
