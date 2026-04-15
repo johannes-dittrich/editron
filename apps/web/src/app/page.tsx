@@ -11,10 +11,14 @@ export default function LandingPage() {
       {/* nav */}
       <nav className="border-b border-line">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-6">
-          <div className="flex items-baseline gap-3">
+          <a href="/" className="flex items-center gap-3">
+            <img
+              src="/logo.png?v=2"
+              alt="Editron"
+              className="h-9 w-auto"
+            />
             <span className="font-serif text-2xl italic tracking-tight">editron</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] text-ink-dim">issue 01</span>
-          </div>
+          </a>
           <div className="hidden items-center gap-8 text-sm text-ink-soft md:flex">
             <a href="#how" className="hover:text-ink">How it works</a>
             <a href="#pricing" className="hover:text-ink">Pricing</a>
@@ -39,7 +43,7 @@ export default function LandingPage() {
               An AI video editor for people who write
             </div>
 
-            <h1 className="font-serif text-[clamp(2rem,4.4vw,4.5rem)] font-normal leading-[0.95] tracking-tightest text-ink">
+            <h1 className="font-serif text-[clamp(2.75rem,4.4vw,4.5rem)] font-normal leading-[0.95] tracking-tightest text-ink">
               Drop the footage.<br />
               Describe the cut.<br />
               <span className="italic">Ship the video.</span>
@@ -149,66 +153,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* before / after */}
-      <section className="border-b border-line bg-white">
-        <div className="mx-auto max-w-6xl px-8 py-24">
-          <div className="mb-16 max-w-xl">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">A raw take, an edit</p>
-            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
-              You see the words.<br />
-              Editron sees the cuts.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-            <div>
-              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Before — raw transcript</p>
-              <div className="border border-line bg-paper p-6 font-mono text-sm leading-relaxed text-ink-soft">
-                <p>
-                  <span className="text-ink-dim">[00:02]</span> So, um, ninety percent —{" "}
-                  <span className="line-through decoration-ink/40">no sorry, let me start over —</span> ninety
-                  percent of what a web agent does is, you know, completely wasted.
-                </p>
-                <p className="mt-3">
-                  <span className="text-ink-dim">[00:11]</span>{" "}
-                  <span className="line-through decoration-ink/40">Uh, so what we did —</span> We fixed this.
-                </p>
-                <p className="mt-3">
-                  <span className="text-ink-dim">[00:14]</span>{" "}
-                  <span className="line-through decoration-ink/40">Um,</span> Editron reasons on the audio first,
-                  then the visuals follow.
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">After — the cut</p>
-              <div className="border border-ink bg-ink p-6 font-mono text-sm leading-relaxed text-paper">
-                <p>
-                  <span className="text-paper/50">[00:00]</span> Ninety percent of what a web agent does is
-                  completely wasted.
-                </p>
-                <p className="mt-3">
-                  <span className="text-paper/50">[00:06]</span> We fixed this.
-                </p>
-                <p className="mt-3">
-                  <span className="text-paper/50">[00:08]</span> Editron reasons on the audio first, then the
-                  visuals follow.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* how it works */}
-      <section id="how" className="border-b border-line">
+      <section id="how" className="border-b border-line bg-white">
         <div className="mx-auto max-w-6xl px-8 py-24">
           <div className="mb-16 max-w-xl">
             <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">The workflow</p>
             <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
-              Three steps,<br />
-              none of them <span className="italic">clicking</span>.
+              From raw clips to final export<br />
+              in <span className="italic">three steps</span>.
             </h2>
           </div>
 
@@ -261,6 +213,58 @@ export default function LandingPage() {
               </div>
             </li>
           </ol>
+        </div>
+      </section>
+
+      {/* before / after */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-8 py-24">
+          <div className="mb-16 max-w-xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">A raw take, an edit</p>
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
+              You see the words.<br />
+              Editron sees the cuts.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Before — raw transcript</p>
+              <div className="border border-line bg-paper p-6 font-mono text-sm leading-relaxed text-ink-soft">
+                <p>
+                  <span className="text-ink-dim">[00:02]</span> So, um, ninety percent —{" "}
+                  <span className="line-through decoration-ink/40">no sorry, let me start over —</span> ninety
+                  percent of what a web agent does is, you know, completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:11]</span>{" "}
+                  <span className="line-through decoration-ink/40">Uh, so what we did —</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:14]</span>{" "}
+                  <span className="line-through decoration-ink/40">Um,</span> Editron reasons on the audio first,
+                  then the visuals follow.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">After — the cut</p>
+              <div className="border border-ink bg-ink p-6 font-mono text-sm leading-relaxed text-paper">
+                <p>
+                  <span className="text-paper/50">[00:00]</span> Ninety percent of what a web agent does is
+                  completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:06]</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:08]</span> Editron reasons on the audio first, then the
+                  visuals follow.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -354,8 +358,11 @@ export default function LandingPage() {
 
       {/* footer */}
       <footer>
-        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-8 py-12 md:flex-row">
-          <p className="font-serif italic text-ink-dim">editron — issue 01</p>
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-8 py-12 md:flex-row md:items-center">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png?v=2" alt="Editron" className="h-10 w-auto opacity-70" />
+            <p className="font-serif italic text-ink-dim">editron</p>
+          </div>
           <p className="text-sm text-ink-dim">© 2026 Editron. All rights reserved.</p>
         </div>
       </footer>
