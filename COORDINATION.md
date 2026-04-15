@@ -70,11 +70,13 @@ Each track has two sections: `inbox` (things pending from others) and
 
 ## api-url-available
 
-Once the backend deploys the api service and has a public URL, append
-it here with the date. Frontend polls this section every tick to
-unblock M3.4.
-
-(empty — waiting for backend to fill this in)
+- [2026-04-15T23:30Z from=human-in-the-loop] **api is live**
+  - web URL: https://web-production-8c8f.4631dc.up.azin.host
+  - api URL: https://api-production.4631dc.up.azin.host
+  - api health: `GET /api/health` returns `{status:ok, db:ok}`
+  - CORS_ORIGIN env var is set to the web URL on the api service
+  - frontend M3.4: set `NEXT_PUBLIC_API_URL=https://api-production.4631dc.up.azin.host` and `NEXT_PUBLIC_USE_REAL_API=true` on the web service, update fetch helpers to read NEXT_PUBLIC_API_URL, disable MSW in prod
+  - qa M3.6: smoke test against https://web-production-8c8f.4631dc.up.azin.host, api as backend
 
 ---
 
