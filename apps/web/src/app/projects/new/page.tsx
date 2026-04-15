@@ -538,13 +538,24 @@ function Step2({
   );
 }
 
-function Step3({ state }: { state: WizardState }) {
+function Step3({
+  state,
+  dispatch,
+}: {
+  state: WizardState;
+  dispatch: React.Dispatch<WizardAction>;
+}) {
   const router = useRouter();
   const { state: uploadState, dispatch: uploadDispatch } = useUploads();
+  const [opening, setOpening] = useState(false);
 
   const sourceFiles = uploadState.files.filter((f) => f.kind === "source");
   const doneCount = sourceFiles.filter((f) => f.status === "done").length;
-  const canOpen = doneCount >= 1;
+  const hasFiles = sourceFiles.length > 0;
+  // Always clickable — the spec says every step is optional. Uploads
+  // continue in the background via the UploadsProvider after navigation.
+  const canOpen = true;
+  const isDimmed = hasFiles && doneCount === 0;
 
   function handleFiles(files: File[]) {
     for (const file of files) {
@@ -561,9 +572,35 @@ function Step3({ state }: { state: WizardState }) {
     }
   }
 
-  function openProject() {
-    if (state.projectId) {
-      router.push(`/projects/${state.projectId}`);
+  async function openProject() {
+    if (opening) return;
+    setOpening(true);
+    let projectId = state.projectId;
+    // Step 1 may have been skipped and left projectId null. Try to create
+    // one now so the button always goes somewhere.
+    if (!projectId) {
+      try {
+        const title =
+          state.title || `Untitled draft · ${new Date().toISOString().slice(0, 10)}`;
+        const res = await fetch("/api/projects", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          projectId = data.id;
+          if (projectId) dispatch({ type: "SET_PROJECT_ID", id: projectId });
+        }
+      } catch {
+        // fall through
+      }
+    }
+    if (projectId) {
+      router.push(`/projects/${projectId}`);
+    } else {
+      // Real backend may be offline — bail to dashboard so user isn't stuck.
+      router.push("/dashboard");
     }
   }
 
@@ -616,13 +653,22 @@ function Step3({ state }: { state: WizardState }) {
       <div className="mt-10 flex items-center justify-end">
         <button
           onClick={openProject}
-          disabled={!canOpen}
-          className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-base font-medium text-paper hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-40"
+          disabled={!canOpen || opening}
+          className={
+            "inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-base font-medium text-paper hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed " +
+            (isDimmed ? "opacity-60" : "")
+          }
           data-testid="open-project-button"
         >
-          Open project <ArrowRight className="h-4 w-4" />
+          {opening ? "Opening…" : "Open project"}{" "}
+          <ArrowRight className="h-4 w-4" />
         </button>
       </div>
+      {hasFiles && doneCount < sourceFiles.length ? (
+        <p className="mt-3 text-right text-xs text-ink-dim">
+          uploads continue in the background after you open the project.
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -681,7 +727,7 @@ function WizardInner() {
         {state.step === 2 && (
           <Step2 state={state} dispatch={dispatch} onNext={() => goToStep(3)} />
         )}
-        {state.step === 3 && <Step3 state={state} />}
+        {state.step === 3 && <Step3 state={state} dispatch={dispatch} />}
       </main>
     </div>
   );
