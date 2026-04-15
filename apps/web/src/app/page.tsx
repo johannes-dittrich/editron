@@ -1,255 +1,362 @@
 import Link from "next/link";
-import { ArrowRight, Check, Clapperboard, MessageSquareText, Palette, Play, ScanSearch, Sparkles, Subtitles, WandSparkles } from "lucide-react";
-import { featureCards, pricingPlans } from "@/lib/mock-data";
-import { Logo } from "@/components/logo";
+import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 
-const steps = [
-  {
-    title: "Upload footage",
-    copy: "Bring in interviews, b-roll, music, brand graphics, and transcripts. The media library is ready for full project organization."
-  },
-  {
-    title: "Direct the AI",
-    copy: "Tell Editron what you want in natural language: remove filler, find a sharper cold open, add captions, or shift pacing."
-  },
-  {
-    title: "Polish and export",
-    copy: "Review the timeline, trim the last details, and send a final export through the Fastify render pipeline."
-  }
-];
-
-const icons = [MessageSquareText, ScanSearch, Subtitles, Palette, Sparkles, Clapperboard];
+// V4 — Editorial base (V1) with V3's split-hero layout and V3's hero copy
+// Fraunces serif for headlines, Inter body, light mode, impeccable.style
+// principles. Hero is now half copy / half product demo card.
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-canvas text-white">
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-black/60 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Logo />
-          <div className="hidden items-center gap-8 text-sm text-zinc-400 md:flex">
-            <a href="#features" className="transition hover:text-white">Features</a>
-            <a href="#workflow" className="transition hover:text-white">How it works</a>
-            <a href="#pricing" className="transition hover:text-white">Pricing</a>
-            <Link href="/login" className="transition hover:text-white">Login</Link>
-            <Link href="/signup" className="rounded-full bg-accent px-5 py-2.5 font-semibold text-white transition hover:bg-[#ff6d1f]">
-              Start free
+    <main className="bg-paper text-ink">
+      {/* nav */}
+      <nav className="border-b border-line">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-6">
+          <div className="flex items-baseline gap-3">
+            <span className="font-serif text-2xl italic tracking-tight">editron</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] text-ink-dim">issue 01</span>
+          </div>
+          <div className="hidden items-center gap-8 text-sm text-ink-soft md:flex">
+            <a href="#how" className="hover:text-ink">How it works</a>
+            <a href="#pricing" className="hover:text-ink">Pricing</a>
+            <Link href="/login" className="hover:text-ink">Sign in</Link>
+            <Link
+              href="/signup"
+              className="inline-flex items-center gap-1.5 rounded-full bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-accent-dark"
+            >
+              Try for free <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
       </nav>
 
-      <section className="relative overflow-hidden px-6 pb-20 pt-14">
-        <div className="absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_top,rgba(255,90,0,0.18),transparent_50%)]" />
-        <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
+      {/* hero — V3 split layout with V1's editorial serif typography */}
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-24 lg:grid-cols-[1.1fr_0.9fr] lg:py-32">
+          {/* copy side — serif, editorial */}
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/10 px-4 py-2 text-xs uppercase tracking-[0.24em] text-accentSoft">
-              <WandSparkles className="h-4 w-4" />
-              AI video post-production
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-3 py-1 text-[11px] text-ink-dim">
+              <Sparkles className="h-3 w-3 text-accent" />
+              An AI video editor for people who write
             </div>
-            <h1 className="mt-8 max-w-4xl text-5xl font-semibold leading-[1.02] text-balance md:text-7xl">
-              AI-Powered Video Editing
-              <span className="mt-3 block bg-gradient-to-r from-white via-[#ffd0b6] to-[#ff5a00] bg-clip-text text-transparent">
-                Edit videos with your voice, not your mouse
-              </span>
+
+            <h1 className="font-serif text-[clamp(2rem,4.4vw,4.5rem)] font-normal leading-[0.95] tracking-tightest text-ink">
+              Drop the footage.<br />
+              Describe the cut.<br />
+              <span className="italic">Ship the video.</span>
             </h1>
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-zinc-400">
-              Editron turns natural language into timeline edits, transcript cleanups, grading, and export-ready sequences so creative teams can move at review speed instead of tool speed.
+
+            <p className="mt-10 max-w-lg text-lg leading-relaxed text-ink-soft">
+              Upload your footage. Describe what you want in plain English.
+              Editron transcribes, picks the cuts, grades, adds subtitles,
+              and exports. The first decisions happen on the audio — because
+              that&apos;s where they should.
             </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/signup" className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-7 py-4 text-sm font-semibold text-white shadow-glow transition hover:bg-[#ff6d1f]">
-                Start editing free
-                <ArrowRight className="h-4 w-4" />
+            <div className="mt-10 flex flex-wrap items-center gap-5">
+              <Link
+                href="/signup"
+                className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-base font-medium text-paper hover:bg-accent-dark"
+              >
+                Try for free <ArrowUpRight className="h-4 w-4" />
               </Link>
-              <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-7 py-4 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/10">
-                <Play className="h-4 w-4" />
-                Open dashboard
-              </Link>
+              <a
+                href="#how"
+                className="text-base text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+              >
+                See how it works ↓
+              </a>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-5 text-xs text-ink-dim">
+              <span className="flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" />
+                10 min render free
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" />
+                No credit card
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Check className="h-3.5 w-3.5 text-accent" />
+                $12/mo after
+              </span>
             </div>
           </div>
 
-          <div className="relative animate-float">
-            <div className="surface-card hero-grid relative overflow-hidden rounded-[32px] border border-white/10 p-4 shadow-glow">
-              <div className="absolute right-6 top-6 rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-accentSoft">
-                Live editor
-              </div>
-              <div className="rounded-[28px] border border-white/10 bg-[#0b0b0b] p-4">
-                <div className="flex items-center gap-2 border-b border-white/10 pb-4">
-                  <div className="h-3 w-3 rounded-full bg-rose-500/70" />
-                  <div className="h-3 w-3 rounded-full bg-amber-500/70" />
-                  <div className="h-3 w-3 rounded-full bg-emerald-500/70" />
-                  <div className="ml-3 text-xs uppercase tracking-[0.2em] text-zinc-500">Editron studio</div>
+          {/* demo side — V3 product demo card */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-lg border border-ink/20 bg-white shadow-[0_40px_80px_-20px_rgba(10,10,10,0.15),0_0_0_1px_rgba(10,10,10,0.05)]">
+              <div className="flex items-center gap-2 border-b border-line bg-paper-alt px-4 py-3">
+                <div className="flex gap-1.5">
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
                 </div>
+                <span className="ml-2 font-mono text-[10px] text-ink-dim">editron / launch-video.proj</span>
+              </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-[0.26fr_0.47fr_0.27fr]">
-                  <div className="rounded-[24px] border border-white/10 bg-white/5 p-3">
-                    <div className="text-xs uppercase tracking-[0.22em] text-zinc-500">Media</div>
-                    <div className="mt-3 space-y-3">
-                      {[54, 68, 76].map((width, index) => (
-                        <div key={width} className="rounded-2xl border border-white/10 bg-black/30 p-3">
-                          <div className="h-2 rounded-full bg-white/10" style={{ width: `${width}%` }} />
-                          <div className="mt-3 h-1.5 rounded-full bg-accent/60" style={{ width: `${42 + index * 14}%` }} />
-                        </div>
-                      ))}
+              <div className="border-b border-line bg-ink p-5">
+                <div className="flex aspect-video items-center justify-center overflow-hidden rounded bg-paper-warm">
+                  <div className="text-center">
+                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-ink">
+                      <div className="ml-1 h-0 w-0 border-y-[9px] border-l-[15px] border-y-transparent border-l-ink" />
                     </div>
-                  </div>
-
-                  <div className="rounded-[24px] border border-white/10 bg-[#121212] p-3">
-                    <div className="flex h-56 items-end justify-between rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,90,0,0.18),transparent_38%)] p-5">
-                      <div>
-                        <div className="text-xs uppercase tracking-[0.22em] text-zinc-500">Preview</div>
-                        <div className="mt-2 text-2xl font-semibold">Launch cut v03</div>
-                      </div>
-                      <div className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs text-zinc-400">00:42</div>
-                    </div>
-
-                    <div className="mt-4 rounded-[20px] border border-white/10 bg-black/30 p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="text-xs uppercase tracking-[0.22em] text-zinc-500">Timeline</div>
-                        <div className="text-xs text-zinc-500">3 tracks</div>
-                      </div>
-                      <div className="mt-4 space-y-2">
-                        {[["#ff5a00", "58%"], ["#1f6feb", "42%"], ["#22c55e", "28%"]].map(([color, width], index) => (
-                          <div key={index} className="h-10 rounded-2xl border border-white/10 bg-black/20 p-1">
-                            <div className="h-full rounded-xl" style={{ width, background: `linear-gradient(135deg, ${color}, rgba(255,255,255,0.16))` }} />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[24px] border border-white/10 bg-white/5 p-3">
-                    <div className="text-xs uppercase tracking-[0.22em] text-zinc-500">AI chat</div>
-                    <div className="mt-3 space-y-3">
-                      {["Tighten the intro and cut dead air.", "Draft updated. Added subtitles and a gentle warm cleanup grade."].map((line, index) => (
-                        <div key={line} className={`rounded-2xl border p-3 text-sm leading-6 ${index === 0 ? "border-accent/20 bg-accent/10 text-white" : "border-white/10 bg-black/30 text-zinc-300"}`}>
-                          {line}
-                        </div>
-                      ))}
+                    <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-dim">
+                      720p preview · 58s
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="features" className="mx-auto max-w-7xl px-6 py-20">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.24em] text-accentSoft">Features</p>
-            <h2 className="mt-4 text-4xl font-semibold">A professional web editor wrapped around your AI video engine.</h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-zinc-400">
-            The product layer is built for serious workflows: dark interface, fast navigation, clear hierarchy, and controls that feel closer to a post-production suite than a toy generator.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {featureCards.map((feature, index) => {
-            const Icon = icons[index];
-            return (
-              <div key={feature.title} className="surface-card rounded-[28px] border border-white/10 p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/10 text-accent">
-                  <Icon className="h-5 w-5" />
+              <div className="space-y-2 px-5 py-4 font-mono text-[11px] leading-relaxed">
+                <div className="text-ink-soft">
+                  <span className="text-ink-dim">[00:02]</span> Ninety percent of what a web agent does is{" "}
+                  <span className="bg-accent/20 px-1 text-ink">completely wasted</span>.
                 </div>
-                <h3 className="mt-6 text-xl font-semibold">{feature.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-zinc-400">{feature.copy}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <section id="workflow" className="border-y border-white/10 bg-black/20 px-6 py-20">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm uppercase tracking-[0.24em] text-accentSoft">How it works</p>
-          <h2 className="mt-4 max-w-3xl text-4xl font-semibold">Three steps from raw footage to export-ready video.</h2>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {steps.map((step, index) => (
-              <div key={step.title} className="surface-card rounded-[28px] border border-white/10 p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-accent/20 bg-accent/10 text-lg font-semibold text-accent">
-                  {index + 1}
+                <div className="text-ink-soft">
+                  <span className="text-ink-dim">[00:08]</span> We fixed this.
                 </div>
-                <h3 className="mt-6 text-2xl font-semibold">{step.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-zinc-400">{step.copy}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="pricing" className="mx-auto max-w-7xl px-6 py-20">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="text-sm uppercase tracking-[0.24em] text-accentSoft">Pricing</p>
-            <h2 className="mt-4 text-4xl font-semibold">Choose the editing throughput that matches your team.</h2>
-          </div>
-          <p className="max-w-xl text-sm leading-7 text-zinc-400">
-            Start on Free, then move into Pro or Business when you need more storage, higher export quality, and heavier AI workloads.
-          </p>
-        </div>
-
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {pricingPlans.map((plan) => (
-            <div key={plan.id} className={`rounded-[30px] border p-7 ${plan.id === "pro" ? "border-accent/30 bg-gradient-to-b from-accent/10 to-white/5 shadow-glow" : "border-white/10 bg-white/5"}`}>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="text-2xl font-semibold">{plan.name}</div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-400">{plan.description}</p>
+                <div className="text-ink-soft">
+                  <span className="text-ink-dim">[00:11]</span>{" "}
+                  <span className="line-through opacity-50">Uh, so basically,</span> Editron reasons on the audio first.
                 </div>
-                {plan.id === "pro" ? (
-                  <div className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-accentSoft">Popular</div>
-                ) : null}
               </div>
-              <div className="mt-8 flex items-end gap-2">
-                <span className="text-5xl font-semibold">${plan.priceMonthly}</span>
-                <span className="pb-2 text-zinc-500">/ month</span>
-              </div>
-              <div className="mt-8 space-y-3">
-                {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-3 text-sm text-zinc-300">
-                    <Check className="h-4 w-4 text-accentSoft" />
-                    {feature}
+
+              <div className="border-t border-line bg-paper p-4">
+                <div className="space-y-2.5">
+                  <div className="flex items-start gap-2.5 text-xs">
+                    <span className="mt-0.5 rounded-sm bg-ink px-1.5 py-0.5 font-mono text-[10px] font-semibold text-paper">
+                      you
+                    </span>
+                    <span className="text-ink">tighten the hook, warmer grade</span>
                   </div>
-                ))}
+                  <div className="flex items-start gap-2.5 text-xs">
+                    <span className="mt-0.5 rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[10px] font-semibold text-paper">
+                      editron
+                    </span>
+                    <span className="text-ink-soft italic">
+                      tightened. grade shifted +warmth. ready to preview.
+                    </span>
+                  </div>
+                </div>
               </div>
-              <Link href="/signup" className={`mt-8 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${plan.id === "pro" ? "bg-accent text-white hover:bg-[#ff6d1f]" : "border border-white/10 bg-black/20 text-white hover:border-white/20 hover:bg-white/5"}`}>
-                {plan.id === "business" ? "Contact sales" : plan.id === "free" ? "Get started" : "Start free trial"}
-              </Link>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section className="px-6 pb-20">
-        <div className="mx-auto max-w-7xl rounded-[36px] border border-white/10 bg-gradient-to-r from-accent/15 via-white/5 to-transparent p-8 md:p-12">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-sm uppercase tracking-[0.24em] text-accentSoft">Start now</p>
-              <h2 className="mt-4 text-4xl font-semibold">Build the first draft in minutes, then refine where human taste matters.</h2>
-            </div>
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <Link href="/signup" className="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#ff6d1f]">
-                Create account
-              </Link>
-              <Link href="/dashboard" className="inline-flex items-center justify-center rounded-full border border-white/10 bg-black/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/5">
-                Explore dashboard
-              </Link>
+            <div className="absolute -right-3 -top-3 rounded-md border border-ink/20 bg-white px-3 py-1.5 font-mono text-[10px] font-semibold uppercase tracking-widest text-accent shadow-sm">
+              live
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10 px-6 py-10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
-          <Logo />
-          <div className="flex flex-wrap gap-6">
-            <Link href="/login" className="transition hover:text-white">Login</Link>
-            <Link href="/signup" className="transition hover:text-white">Signup</Link>
-            <Link href="/dashboard" className="transition hover:text-white">Dashboard</Link>
+      {/* before / after */}
+      <section className="border-b border-line bg-white">
+        <div className="mx-auto max-w-6xl px-8 py-24">
+          <div className="mb-16 max-w-xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">A raw take, an edit</p>
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
+              You see the words.<br />
+              Editron sees the cuts.
+            </h2>
           </div>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Before — raw transcript</p>
+              <div className="border border-line bg-paper p-6 font-mono text-sm leading-relaxed text-ink-soft">
+                <p>
+                  <span className="text-ink-dim">[00:02]</span> So, um, ninety percent —{" "}
+                  <span className="line-through decoration-ink/40">no sorry, let me start over —</span> ninety
+                  percent of what a web agent does is, you know, completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:11]</span>{" "}
+                  <span className="line-through decoration-ink/40">Uh, so what we did —</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-ink-dim">[00:14]</span>{" "}
+                  <span className="line-through decoration-ink/40">Um,</span> Editron reasons on the audio first,
+                  then the visuals follow.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-4 text-[11px] uppercase tracking-[0.22em] text-ink-dim">After — the cut</p>
+              <div className="border border-ink bg-ink p-6 font-mono text-sm leading-relaxed text-paper">
+                <p>
+                  <span className="text-paper/50">[00:00]</span> Ninety percent of what a web agent does is
+                  completely wasted.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:06]</span> We fixed this.
+                </p>
+                <p className="mt-3">
+                  <span className="text-paper/50">[00:08]</span> Editron reasons on the audio first, then the
+                  visuals follow.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* how it works */}
+      <section id="how" className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-8 py-24">
+          <div className="mb-16 max-w-xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">The workflow</p>
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
+              Three steps,<br />
+              none of them <span className="italic">clicking</span>.
+            </h2>
+          </div>
+
+          <ol className="space-y-16">
+            <li className="grid grid-cols-12 gap-8">
+              <div className="col-span-12 md:col-span-1">
+                <span className="font-serif text-3xl italic text-ink-dim">01</span>
+              </div>
+              <div className="col-span-12 md:col-span-11">
+                <h3 className="font-serif text-3xl font-normal leading-tight tracking-tightish">
+                  Set the context.
+                </h3>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
+                  Drop a reference video in the style you want. Add a voice memo or a short brief: what the video
+                  is about, how it should be structured, who it&apos;s for. Upload your raw footage alongside.
+                  Editron reads all of it before it proposes a single cut.
+                </p>
+              </div>
+            </li>
+
+            <li className="grid grid-cols-12 gap-8">
+              <div className="col-span-12 md:col-span-1">
+                <span className="font-serif text-3xl italic text-ink-dim">02</span>
+              </div>
+              <div className="col-span-12 md:col-span-11">
+                <h3 className="font-serif text-3xl font-normal leading-tight tracking-tightish">
+                  Approve the strategy.
+                </h3>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
+                  Editron proposes a shape — hook, setup, payoff, CTA — picks the best takes from what you
+                  uploaded, and tells you in four sentences what it would build. You approve, iterate, or
+                  redirect. No edits happen until you&apos;ve agreed on the plan.
+                </p>
+              </div>
+            </li>
+
+            <li className="grid grid-cols-12 gap-8">
+              <div className="col-span-12 md:col-span-1">
+                <span className="font-serif text-3xl italic text-ink-dim">03</span>
+              </div>
+              <div className="col-span-12 md:col-span-11">
+                <h3 className="font-serif text-3xl font-normal leading-tight tracking-tightish">
+                  Ship the cut.
+                </h3>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-soft">
+                  720p preview in seconds. Word-level iteration in plain English. Final render with color grade,
+                  subtitles, and loudness normalization when you say <span className="italic">ship</span>. Export
+                  to your destination of choice.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      {/* pricing */}
+      <section id="pricing" className="border-b border-line bg-white">
+        <div className="mx-auto max-w-6xl px-8 py-24">
+          <div className="mb-16 max-w-xl">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.22em] text-ink-dim">Pricing</p>
+            <h2 className="font-serif text-4xl font-normal leading-tight tracking-tightish md:text-5xl">
+              Free to try.<br />
+              <span className="italic">Pay when it ships.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            <div className="border-t border-ink pt-6">
+              <h3 className="font-serif text-2xl">Free</h3>
+              <p className="mt-2 text-sm text-ink-dim">For trying Editron</p>
+              <p className="mt-6 font-serif text-5xl">$0</p>
+              <ul className="mt-8 space-y-3 text-sm text-ink-soft">
+                <li>— 10 minutes of render / month</li>
+                <li>— 720p previews</li>
+                <li>— One project</li>
+              </ul>
+              <Link
+                href="/signup"
+                className="mt-10 block text-sm font-medium underline-offset-4 hover:underline"
+              >
+                Start →
+              </Link>
+            </div>
+
+            <div className="border-t-2 border-accent pt-6">
+              <h3 className="font-serif text-2xl">Creator</h3>
+              <p className="mt-2 text-sm text-ink-dim">For founders and solo creators</p>
+              <p className="mt-6 font-serif text-5xl">
+                $24<span className="text-lg text-ink-dim"> /mo</span>
+              </p>
+              <ul className="mt-8 space-y-3 text-sm text-ink-soft">
+                <li>— 10 hours of render / month</li>
+                <li>— 4K final exports</li>
+                <li>— Unlimited projects</li>
+                <li>— Priority Scribe queue</li>
+              </ul>
+              <Link
+                href="/signup?plan=creator"
+                className="mt-10 block text-sm font-medium underline-offset-4 hover:underline"
+              >
+                Start →
+              </Link>
+            </div>
+
+            <div className="border-t border-ink pt-6">
+              <h3 className="font-serif text-2xl">Studio</h3>
+              <p className="mt-2 text-sm text-ink-dim">For agencies and teams</p>
+              <p className="mt-6 font-serif text-5xl">
+                $96<span className="text-lg text-ink-dim"> /mo</span>
+              </p>
+              <ul className="mt-8 space-y-3 text-sm text-ink-soft">
+                <li>— 40 hours of render / month</li>
+                <li>— Brand kits and grading presets</li>
+                <li>— Team seats &amp; shared project memory</li>
+                <li>— SLA and onboarding</li>
+              </ul>
+              <a
+                href="mailto:hello@editron.video"
+                className="mt-10 block text-sm font-medium underline-offset-4 hover:underline"
+              >
+                Contact →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* cta */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-8 py-32 text-center">
+          <h2 className="font-serif text-5xl font-normal leading-tight tracking-tightest md:text-7xl">
+            Stop fighting<br />
+            <span className="italic">the timeline.</span>
+          </h2>
+          <Link
+            href="/signup"
+            className="mt-12 inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 text-base font-medium text-paper hover:bg-accent-dark"
+          >
+            Try for free <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* footer */}
+      <footer>
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-6 px-8 py-12 md:flex-row">
+          <p className="font-serif italic text-ink-dim">editron — issue 01</p>
+          <p className="text-sm text-ink-dim">© 2026 Editron. All rights reserved.</p>
         </div>
       </footer>
     </main>
