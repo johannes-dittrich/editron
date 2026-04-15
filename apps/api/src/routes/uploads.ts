@@ -11,6 +11,7 @@ import { uploads, projects } from "@editron/db";
 import { eq, and } from "drizzle-orm";
 import { r2, R2_BUCKET, getObjectKey, type UploadKind } from "@editron/shared/r2";
 import { requireSession } from "../lib/session.js";
+import { audioExtractQueue } from "../queue/index.js";
 
 const PART_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -176,6 +177,15 @@ export async function registerUploadRoutes(app: FastifyInstance) {
       .set({ status: "uploaded", multipartUploadId: null })
       .where(eq(uploads.id, upload.id))
       .returning();
+
+    if (upload.kind === "source") {
+      await audioExtractQueue.add("extract", {
+        uploadId: upload.id,
+        r2Key: upload.r2Key,
+        userId: session.user.id,
+        projectId: upload.projectId,
+      });
+    }
 
     return updated;
   });

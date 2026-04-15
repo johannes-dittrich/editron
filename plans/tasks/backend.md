@@ -41,7 +41,7 @@ feature/web-app` into your worktree, then branch off from it.
 - [x] `POST /api/uploads/initiate` / `POST /api/uploads/:id/part-url` / `POST /api/uploads/:id/complete` / `POST /api/uploads/:id/abort`. Each session-gated and project-scoped. Integration test: upload a 20 MB fixture end-to-end against real R2 under a `test/` prefix.
 
 ### M0.8 — BullMQ scaffold
-- [ ] `apps/api/src/queue/index.ts` sets up BullMQ with `REDIS_URL` (local docker-compose Redis for dev). Define the `audio-extract` queue + worker. Worker is a no-op for now (just logs and marks the `uploads` row as `processed`).
+- [x] `apps/api/src/queue/index.ts` sets up BullMQ with `REDIS_URL` (local docker-compose Redis for dev). Define the `audio-extract` queue + worker. Worker is a no-op for now (just logs and marks the `uploads` row as `processed`).
 
 ### M0.9 — Audio-extract worker (the real one)
 - [ ] Implement the HTTP-Range → ffmpeg pipe flow from `plans/03-storage-and-upload.md` §3. Write the extracted WAV to a temp path, upload it to R2 under `transcripts/{uploadId}.wav`, mark `uploads.status = 'processed'`. Integration test with a real 30 MB fixture.
