@@ -6,4 +6,4 @@
 2026-04-15T02:54:00Z backend M0.6 R2 client — S3Client for Cloudflare R2, key helpers, @editron/shared/r2 subpath, 5 unit tests https://github.com/mathisdittrich/editron/pull/6
 2026-04-15T03:10:00Z backend M0.7 Multipart uploads — 4 endpoints (initiate/part-url/complete/abort), e2e R2 test, 9 integration tests https://github.com/mathisdittrich/editron/pull/7
 2026-04-15T03:22:00Z backend M0.8 BullMQ scaffold — audio-extract queue + no-op worker, docker-compose Redis, graceful shutdown https://github.com/mathisdittrich/editron/pull/8
-2026-04-15T08:37:52Z frontend M1.3 auth pages — /login and /signup with Zod validation, MSW handlers, 15 Playwright tests https://github.com/mathisdittrich/editron/pull/17
+2026-04-15T08:54:15Z frontend M1.4 dashboard — project grid, loading/empty/error states, top bar, user menu, 9 Playwright tests https://github.com/mathisdittrich/editron/pull/19

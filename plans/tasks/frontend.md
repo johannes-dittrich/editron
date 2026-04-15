@@ -78,18 +78,18 @@ to the hard-check list. Every PR must pass it.
 - [x] Playwright e2e for both flows, including error states.
 
 ### M1.4 — Dashboard
-- [ ] `/dashboard` server component that fetches `GET /api/projects` and
+- [x] `/dashboard` client component that fetches `GET /api/projects` and
   renders a grid of project cards. Each card: title, last updated, tiny
   thumbnail strip, status pill ("draft" / "ingesting" / "ready"). Cards
   link to `/projects/[id]`.
-- [ ] Empty state: if no projects, centered Fraunces serif headline
+- [x] Empty state: if no projects, centered Fraunces serif headline
   "Your first cut is a tap away." with a big pill CTA "New project".
-- [ ] Loading state: skeleton grid of 6 blurry cards using the same
+- [x] Loading state: skeleton grid of 6 blurry cards using the same
   border-t pattern as the pricing cards (no box-shadow, no rounded-xl).
-- [ ] Error state: inline banner with "couldn't load your projects. retry?"
-- [ ] Top bar: editron wordmark (serif italic), "New project" pill CTA
+- [x] Error state: inline banner with "couldn't load your projects. retry?"
+- [x] Top bar: editron wordmark (serif italic), "New project" pill CTA
   top-right, user menu (avatar + dropdown with "Sign out" link).
-- [ ] Playwright e2e: loads, renders grid from MSW fixtures, empty state
+- [x] Playwright e2e: loads, renders grid from MSW fixtures, empty state
   visible when fixtures return 0 projects, user menu opens and sign-out
   link works.
 
