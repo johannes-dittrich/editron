@@ -15,6 +15,7 @@ type WizardState = {
   step: 1 | 2 | 3;
   projectId: string | null;
   title: string;
+  referenceUrl: string;
   brief: string;
   briefAudioBlob: Blob | null;
 };
@@ -23,6 +24,7 @@ type WizardAction =
   | { type: "SET_STEP"; step: 1 | 2 | 3 }
   | { type: "SET_PROJECT_ID"; id: string }
   | { type: "SET_TITLE"; title: string }
+  | { type: "SET_REFERENCE_URL"; url: string }
   | { type: "SET_BRIEF"; brief: string }
   | { type: "SET_BRIEF_AUDIO"; blob: Blob | null };
 
@@ -34,12 +36,38 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
       return { ...state, projectId: action.id };
     case "SET_TITLE":
       return { ...state, title: action.title };
+    case "SET_REFERENCE_URL":
+      return { ...state, referenceUrl: action.url };
     case "SET_BRIEF":
       return { ...state, brief: action.brief };
     case "SET_BRIEF_AUDIO":
       return { ...state, briefAudioBlob: action.blob };
     default:
       return state;
+  }
+}
+
+// Validate that a URL looks like a supported video source.
+// Accepts: YouTube, Vimeo, TikTok, Twitter/X, Loom, direct .mp4/.mov/.webm.
+const VIDEO_HOSTS = [
+  "youtube.com",
+  "youtu.be",
+  "vimeo.com",
+  "tiktok.com",
+  "twitter.com",
+  "x.com",
+  "loom.com",
+];
+function isVideoUrl(raw: string): boolean {
+  try {
+    const u = new URL(raw.trim());
+    if (!["http:", "https:"].includes(u.protocol)) return false;
+    const host = u.hostname.replace(/^www\./, "").toLowerCase();
+    if (VIDEO_HOSTS.some((h) => host === h || host.endsWith("." + h))) return true;
+    if (/\.(mp4|mov|mkv|webm|m4v)$/i.test(u.pathname)) return true;
+    return false;
+  } catch {
+    return false;
   }
 }
 
@@ -134,9 +162,12 @@ function Step1({
 }) {
   const { dispatch: uploadDispatch } = useUploads();
   const [refFile, setRefFile] = useState<string | null>(null);
+  const [refMode, setRefMode] = useState<"link" | "upload">("link");
+  const [refUrlError, setRefUrlError] = useState<string | null>(null);
 
   async function handleRefFiles(files: File[]) {
     const file = files[0];
+    setRefMode("upload");
     setRefFile(file.name);
     const id = `ref_${Date.now()}`;
     const uploadFile: UploadFile = {
@@ -198,7 +229,73 @@ function Step1({
           <p className="mb-1.5 text-sm font-medium text-ink">
             Add a reference video <span className="text-ink-dim">(optional)</span>
           </p>
-          {refFile ? (
+          <p className="mb-3 text-xs leading-relaxed text-ink-dim">
+            Shows Editron the style, pacing, and tone you want. Paste a link
+            (YouTube, Vimeo, TikTok, Loom) or upload a file.
+          </p>
+
+          <div className="mb-3 inline-flex rounded-lg border border-line bg-paper p-1">
+            <button
+              type="button"
+              onClick={() => setRefMode("link")}
+              className={
+                "rounded-md px-3 py-1.5 text-xs font-medium transition " +
+                (refMode === "link"
+                  ? "bg-ink text-paper"
+                  : "text-ink-soft hover:text-ink")
+              }
+              data-testid="ref-mode-link"
+            >
+              Paste link
+            </button>
+            <button
+              type="button"
+              onClick={() => setRefMode("upload")}
+              className={
+                "rounded-md px-3 py-1.5 text-xs font-medium transition " +
+                (refMode === "upload"
+                  ? "bg-ink text-paper"
+                  : "text-ink-soft hover:text-ink")
+              }
+              data-testid="ref-mode-upload"
+            >
+              Upload file
+            </button>
+          </div>
+
+          {refMode === "link" ? (
+            <div>
+              <input
+                type="url"
+                value={state.referenceUrl}
+                onChange={(e) => {
+                  dispatch({ type: "SET_REFERENCE_URL", url: e.target.value });
+                  setRefUrlError(null);
+                }}
+                onBlur={() => {
+                  const v = state.referenceUrl.trim();
+                  if (v && !isVideoUrl(v)) {
+                    setRefUrlError(
+                      "doesn't look like a video link — try a YouTube, Vimeo, TikTok, or Loom URL",
+                    );
+                  }
+                }}
+                placeholder="https://www.youtube.com/watch?v=…"
+                className="flex h-11 w-full rounded-lg border border-line bg-paper px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-dim focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                data-testid="ref-url-input"
+              />
+              {refUrlError ? (
+                <p className="mt-2 text-xs text-accent" data-testid="ref-url-error">
+                  {refUrlError}
+                </p>
+              ) : null}
+              {state.referenceUrl && !refUrlError && isVideoUrl(state.referenceUrl) ? (
+                <p className="mt-2 text-xs text-ink-dim">
+                  ✓ ready. Editron will fetch this during the strategy step.
+                </p>
+              ) : null}
+            </div>
+          ) : refFile ? (
             <div className="rounded-lg border border-line bg-paper-alt px-4 py-3 text-sm text-ink">
               {refFile} — uploading…
             </div>
@@ -206,7 +303,7 @@ function Step1({
             <DropZone
               onFiles={handleRefFiles}
               label="Drop or click to upload"
-              hint="Shows Editron the style, pacing, and tone you want."
+              hint="Any .mp4, .mov, .mkv, .webm up to 2 GB."
               testId="ref-drop-zone"
             />
           )}
@@ -554,6 +651,7 @@ function WizardInner() {
     step: 1,
     projectId: null,
     title: "",
+    referenceUrl: "",
     brief: "",
     briefAudioBlob: null,
   });
