@@ -65,7 +65,7 @@ yourself.
   button exists and navigates to `/signup`, every section has its
   eyebrow label, and the alternating bg-paper / bg-white pattern
   holds (check computed background colors of each section).
-- [ ] `apps/web/e2e/staging/full-flow.spec.ts`: sign up → create
+- [x] `apps/web/e2e/staging/full-flow.spec.ts`: sign up → create
   project → upload a fixture video → verify the ingest row appears
   → verify the rotating ingest messages change every 2.5 s.
 - [ ] Wire the e2e job in CI to run against the production Azin URL
