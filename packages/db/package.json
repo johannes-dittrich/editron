@@ -9,22 +9,26 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "type-check": "tsc --noEmit -p tsconfig.json",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@editron/shared": "workspace:*",
-    "better-sqlite3": "^11.8.1",
-    "drizzle-orm": "^0.39.3"
+    "@neondatabase/serverless": "0.10.4",
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.12",
-    "drizzle-kit": "^0.30.4",
+    "drizzle-kit": "^0.31.10",
     "typescript": "^5.7.3"
   }
 }

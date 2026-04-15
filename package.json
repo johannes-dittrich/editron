@@ -7,7 +7,8 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
-    "clean": "turbo clean"
+    "clean": "turbo clean",
+    "db:push": "pnpm --filter @editron/db db:push"
   },
   "devDependencies": {
     "turbo": "^2.3.4",

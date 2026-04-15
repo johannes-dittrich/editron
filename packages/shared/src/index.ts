@@ -60,16 +60,7 @@ export type ExportFormat = (typeof EXPORT_FORMATS)[number];
 export type MediaType = "video" | "audio" | "image";
 export type ExportStatus = "pending" | "processing" | "complete" | "failed";
 
-export interface Project {
-  id: string;
-  userId: string;
-  title: string;
-  description: string | null;
-  thumbnailUrl: string | null;
-  settings: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+export * from "./schema.js";
 
 export interface MediaFile {
   id: string;

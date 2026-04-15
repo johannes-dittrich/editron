@@ -20,19 +20,19 @@ feature/web-app` into your worktree, then branch off from it.
 ## Milestone V0 — Foundation
 
 ### M0.1 — Monorepo plumbing
-- [ ] Add Drizzle + Better-Auth + Stripe + Zod + BullMQ + AWS S3 client deps to the relevant `apps/api` / `packages/db` / `packages/shared` package.jsons. Use exact versions. Run `pnpm install`. Verify `turbo build --filter=@editron/api` passes with an empty Fastify entry point that just serves `GET /health`.
+- [x] Add Drizzle + Better-Auth + Stripe + Zod + BullMQ + AWS S3 client deps to the relevant `apps/api` / `packages/db` / `packages/shared` package.jsons. Use exact versions. Run `pnpm install`. Verify `turbo build --filter=@editron/api` passes with an empty Fastify entry point that just serves `GET /health`.
 
 ### M0.2 — Drizzle schema V0
-- [ ] In `packages/db/src/schema/`, define tables `users`, `projects`, `uploads`, `transcripts`, `edls`, `renders` as specified in `plans/02-auth-and-database.md` §Schema. Export types from `packages/shared/src/schema.ts`. Set up `drizzle-kit` config at `packages/db/drizzle.config.ts`. Add a root `pnpm db:push` script.
+- [x] In `packages/db/src/schema/`, define tables `users`, `projects`, `uploads`, `transcripts`, `edls`, `renders` as specified in `plans/02-auth-and-database.md` §Schema. Export types from `packages/shared/src/schema.ts`. Set up `drizzle-kit` config at `packages/db/drizzle.config.ts`. Add a root `pnpm db:push` script.
 
 ### M0.3 — DB connection + health
-- [ ] `packages/db/src/client.ts` loads `DATABASE_URL` from env, exports a `postgres` client and a `db` Drizzle instance. Extend the Fastify health endpoint at `GET /api/health` to include `db: "ok" | "down"` (pings with `select 1`).
+- [x] `packages/db/src/client.ts` loads `DATABASE_URL` from env, exports a `postgres` client and a `db` Drizzle instance. Extend the Fastify health endpoint at `GET /api/health` to include `db: "ok" | "down"` (pings with `select 1`).
 
 ### M0.4 — Better-Auth wiring
-- [ ] Configure Better-Auth with email/password + GitHub provider. Drizzle adapter pointed at the schema tables. Mount as a Fastify plugin at `/api/auth/*`. Store `BETTER_AUTH_SECRET` in env (generate if missing, log a warning). Test: sign up, sign in, `GET /api/me` returns the session user.
+- [x] Configure Better-Auth with email/password + GitHub provider. Drizzle adapter pointed at the schema tables. Mount as a Fastify plugin at `/api/auth/*`. Store `BETTER_AUTH_SECRET` in env (generate if missing, log a warning). Test: sign up, sign in, `GET /api/me` returns the session user.
 
 ### M0.5 — Projects CRUD
-- [ ] `GET /api/projects`, `POST /api/projects`, `GET /api/projects/:id`, `PATCH /api/projects/:id`, `DELETE /api/projects/:id`. All session-gated. Unit tests against a test DB (vitest + pg-mem or a test Neon branch).
+- [x] `GET /api/projects`, `POST /api/projects`, `GET /api/projects/:id`, `PATCH /api/projects/:id`, `DELETE /api/projects/:id`. All session-gated. Unit tests against a test DB (vitest + pg-mem or a test Neon branch).
 
 ### M0.6 — R2 client
 - [ ] `packages/shared/src/r2.ts` exports a typed `@aws-sdk/client-s3` client configured against the R2 endpoint in the env. Helper `getObjectKey(userId, projectId, kind, uploadId, filename)` matching the schema in `plans/03-storage-and-upload.md`.

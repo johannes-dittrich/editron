@@ -1,3 +1,4 @@
+import "./polyfills.js";
 import { buildApp } from "./app.js";
 
 const port = Number(process.env.API_PORT ?? 4000);

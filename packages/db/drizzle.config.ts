@@ -1,10 +1,10 @@
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
-  schema: "./src/schema.ts",
+  schema: "./src/schema/*",
   out: "./drizzle",
-  dialect: "sqlite",
+  dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL?.replace("file:", "") ?? "./editron.db"
-  }
+    url: process.env.DATABASE_URL ?? "",
+  },
 });
