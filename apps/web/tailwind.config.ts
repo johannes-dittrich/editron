@@ -33,28 +33,6 @@ const config: Config = {
         tightest: "-0.045em",
         tightish: "-0.02em",
       },
-      boxShadow: {
-        glow: "0 24px 80px rgba(255, 90, 0, 0.18)",
-      },
-      keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        pulseLine: {
-          "0%, 100%": { opacity: "0.35", transform: "scaleX(0.94)" },
-          "50%": { opacity: "1", transform: "scaleX(1)" },
-        },
-        scan: {
-          "0%": { transform: "translateX(-10%)" },
-          "100%": { transform: "translateX(110%)" },
-        },
-      },
-      animation: {
-        float: "float 7s ease-in-out infinite",
-        pulseLine: "pulseLine 2.8s ease-in-out infinite",
-        scan: "scan 4s linear infinite",
-      },
     },
   },
   plugins: [],

@@ -98,25 +98,25 @@ to the hard-check list. Every PR must pass it.
 This is the big one. Follow `plans/05a-project-context-flow.md` exactly,
 screen by screen.
 
-- [ ] `/projects/new` client component with a 3-step wizard using
+- [x] `/projects/new` client component with a 3-step wizard using
   `useReducer` for state. Project record is created at step 1 submit
   via `POST /api/projects`.
-- [ ] **Step 1** — title input + reference video drop zone. Both
+- [x] **Step 1** — title input + reference video drop zone. Both
   optional. Multipart upload kicked off in the background. Skip button
   and Next button both advance.
-- [ ] **Step 2** — textarea (autosized, 500 char soft limit) + voice
+- [x] **Step 2** — textarea (autosized, 500 char soft limit) + voice
   memo recorder using `MediaRecorder`. Live waveform during recording,
   playback, delete+re-record. 2 minute cap. Mic permission denied →
   inline fallback message. Both fields allowed together.
-- [ ] **Step 3** — source footage multi-drop zone. Multipart upload
+- [x] **Step 3** — source footage multi-drop zone. Multipart upload
   queue concurrent 3. Per-file progress bars. Resumable on refresh via
   localStorage upload state. "Open project" button enabled once ≥1
   upload completes. Invalid file rejected at drop zone level.
-- [ ] Upload context provider wrapping the whole wizard so uploads
+- [x] Upload context provider wrapping the whole wizard so uploads
   survive step transitions and can be shown on subsequent routes.
-- [ ] MSW handlers simulate realistic upload progress (200ms chunks,
+- [x] MSW handlers simulate realistic upload progress (200ms chunks,
   pseudo-random jitter).
-- [ ] All error states match the table in
+- [x] All error states match the table in
   `plans/05a-project-context-flow.md` — lowercase, calm, specific copy.
 
 ### M1.6 — Project detail page with ingesting state
