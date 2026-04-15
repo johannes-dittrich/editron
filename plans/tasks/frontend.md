@@ -16,22 +16,22 @@ to the hard-check list. Every PR must pass it.
 ## Milestone V0 — Foundation
 
 ### M1.0 — Design system wiring
-- [ ] Install shadcn/ui CLI, init with the design-system's Tailwind
+- [x] Install shadcn/ui CLI, init with the design-system's Tailwind
   tokens (paper, ink, ink-soft, ink-dim, paper-alt, line, accent,
   accent-dark). Scaffold these primitives from shadcn: `button`, `card`,
   `dialog`, `input`, `label`, `textarea`. Do NOT install all
   primitives — add on demand.
-- [ ] Update `apps/web/tailwind.config.ts` to match `plans/design-system.md`
+- [x] Update `apps/web/tailwind.config.ts` to match `plans/design-system.md`
   exactly (fontFamily, colors, letterSpacing). Update
   `apps/web/src/app/globals.css` to declare the CSS custom properties
   and reset body background/color.
-- [ ] Load Fraunces + Inter + JetBrains Mono via `next/font/google` in
+- [x] Load Fraunces + Inter + JetBrains Mono via `next/font/google` in
   `apps/web/src/app/layout.tsx` with `--font-serif`, `--font-sans`,
   `--font-mono` variables.
-- [ ] Add a `.storybook`-free sanity page at
-  `apps/web/src/app/_design/page.tsx` that renders one of each primitive
+- [x] Add a `.storybook`-free sanity page at
+  `apps/web/src/app/design/page.tsx` that renders one of each primitive
   at the sizes from the design system, just for visual regression.
-- [ ] Playwright smoke test: `/_design` renders, all primitives are
+- [x] Playwright smoke test: `/design` renders, all primitives are
   visible, no console errors.
 
 ### M1.1 — Land V4 as the canonical landing
