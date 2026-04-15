@@ -6,11 +6,17 @@ import { uploads } from "./uploads.js";
 import { transcripts } from "./transcripts.js";
 import { edls } from "./edls.js";
 import { renders } from "./renders.js";
+import { usageEvents } from "./usage-events.js";
 
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
   projects: many(projects),
+  usageEvents: many(usageEvents),
+}));
+
+export const usageEventsRelations = relations(usageEvents, ({ one }) => ({
+  user: one(users, { fields: [usageEvents.userId], references: [users.id] }),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({

@@ -54,35 +54,35 @@ feature/web-app` into your worktree, then branch off from it.
 ## Milestone V1 — Video pipeline
 
 ### M1.1 — Render queue scaffold
-- [ ] Empty queues for `render-seg`, `render-concat`, `render-final`, `loudnorm`. Each with a typed job payload. Workers that log and exit for now.
+- [x] Empty queues for `render-seg`, `render-concat`, `render-final`, `loudnorm`. Each with a typed job payload. Workers that log and exit for now.
 
 ### M1.2 — Per-segment extraction
-- [ ] `render-seg` worker: given an EDL range, spawn ffmpeg with the range's `--ss`/`--t`, apply per-segment grade filter, add 30ms audio fades. Upload to `renders/{edlId}/segs/{idx}.mp4`. Tests with a fixture EDL.
+- [x] `render-seg` worker: given an EDL range, spawn ffmpeg with the range's `--ss`/`--t`, apply per-segment grade filter, add 30ms audio fades. Upload to `renders/{edlId}/segs/{idx}.mp4`. Tests with a fixture EDL.
 
 ### M1.3 — Lossless concat
-- [ ] `render-concat` worker: download seg files into tmp, ffmpeg concat demuxer with `-c copy`, upload `base.mp4`.
+- [x] `render-concat` worker: download seg files into tmp, ffmpeg concat demuxer with `-c copy`, upload `base.mp4`.
 
 ### M1.4 — Overlays + subtitles
-- [ ] `render-final` worker: apply overlays with PTS shift, then subtitles **last** (SKILL.md rule 1). Generates master SRT inline from transcripts with output-timeline offsets.
+- [x] `render-final` worker: apply overlays with PTS shift, then subtitles **last** (SKILL.md rule 1). Generates master SRT inline from transcripts with output-timeline offsets.
 
 ### M1.5 — Loudnorm
-- [ ] Two-pass ffmpeg loudnorm to `-14 LUFS -1 dBTP LRA 11`. Upload as `final.mp4`. Mark `renders.status = 'done'`.
+- [x] Two-pass ffmpeg loudnorm to `-14 LUFS -1 dBTP LRA 11`. Upload as `final.mp4`. Mark `renders.status = 'done'`.
 
 ---
 
 ## Milestone V2 — AI reasoning + billing
 
 ### M2.1 — Text-to-edit endpoint
-- [ ] `POST /api/projects/:id/ai/edit` per `plans/08-ai-text-to-edit.md`. OpenAI function calling with the `emit_edl` tool. Zod validation rejects cuts that don't land on word boundaries.
+- [x] `POST /api/projects/:id/ai/edit` per `plans/08-ai-text-to-edit.md`. OpenAI function calling with the `emit_edl` tool. Zod validation rejects cuts that don't land on word boundaries.
 
 ### M2.2 — Strategy proposal endpoint
-- [ ] `POST /api/projects/:id/ai/strategy` — the first call before any cuts. Returns a 4-8 sentence paragraph. Persists as `projects.proposedStrategy`.
+- [x] `POST /api/projects/:id/ai/strategy` — the first call before any cuts. Returns a 4-8 sentence paragraph. Persists as `projects.proposedStrategy`.
 
 ### M2.3 — Stripe checkout + webhook
-- [ ] Per `plans/11-billing-and-plans.md` §1. Webhook signature verification. Updates `users.plan` and `users.stripeCustomerId`.
+- [x] Per `plans/11-billing-and-plans.md` §1. Webhook signature verification. Updates `users.plan` and `users.stripeCustomerId`.
 
 ### M2.4 — Usage tracking + quota enforcement
-- [ ] `usage_events` table + `GET /api/usage/current` + `canRender` / `canTranscribe` gates.
+- [x] `usage_events` table + `GET /api/usage/current` + `canRender` / `canTranscribe` gates.
 
 ---
 

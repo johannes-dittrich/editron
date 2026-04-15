@@ -6,6 +6,10 @@ import { sql } from "drizzle-orm";
 import { registerAuthRoutes } from "./routes/auth.js";
 import { registerProjectRoutes } from "./routes/projects.js";
 import { registerUploadRoutes } from "./routes/uploads.js";
+import { registerAiEditRoutes } from "./routes/ai-edit.js";
+import { registerAiStrategyRoutes } from "./routes/ai-strategy.js";
+import { registerBillingRoutes } from "./routes/billing.js";
+import { registerUsageRoutes } from "./routes/usage.js";
 
 export async function buildApp() {
   const app = Fastify({ logger: true });
@@ -32,6 +36,10 @@ export async function buildApp() {
   await registerAuthRoutes(app);
   await registerProjectRoutes(app);
   await registerUploadRoutes(app);
+  await registerAiEditRoutes(app);
+  await registerAiStrategyRoutes(app);
+  await registerBillingRoutes(app);
+  await registerUsageRoutes(app);
 
   return app;
 }

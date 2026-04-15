@@ -5,4 +5,5 @@ export { uploads } from "./uploads.js";
 export { transcripts } from "./transcripts.js";
 export { edls } from "./edls.js";
 export { renders } from "./renders.js";
+export { usageEvents } from "./usage-events.js";
 export * from "./relations.js";
