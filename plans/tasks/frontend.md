@@ -140,11 +140,11 @@ screen by screen.
   ready row has transcript link.
 
 ### M1.7 — Design regression baseline
-- [ ] Playwright visual regression test that captures the landing,
+- [x] Playwright visual regression test that captures the landing,
   login, signup, dashboard, new-project wizard, and project detail
   against staging, stored as baseline screenshots. QA uses these to
   spot accidental visual regressions.
-- [ ] Add a npm script `pnpm --filter @editron/web test:visual` that
+- [x] Add a npm script `pnpm --filter @editron/web test:visual` that
   runs the regression suite.
 
 ---
