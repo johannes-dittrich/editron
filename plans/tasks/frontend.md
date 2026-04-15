@@ -35,16 +35,16 @@ to the hard-check list. Every PR must pass it.
   visible, no console errors.
 
 ### M1.1 — Land V4 as the canonical landing
-- [ ] Copy `apps/web/src/app/page.tsx`, `apps/web/src/app/globals.css`,
+- [x] Copy `apps/web/src/app/page.tsx`, `apps/web/src/app/globals.css`,
   `apps/web/src/app/layout.tsx`, and `apps/web/tailwind.config.ts` from
   the `staging/fe-landing-v4` branch into `agent/frontend` (via
   `git show staging/fe-landing-v4:apps/web/src/app/page.tsx > ...`).
-- [ ] Verify the page renders, lint and type-check pass, `pnpm build`
+- [x] Verify the page renders, lint and type-check pass, `pnpm build`
   succeeds.
-- [ ] Run `scripts/stage.sh feat/fe-land-v4` and verify the staging URL
+- [x] Run `scripts/stage.sh feat/fe-land-v4` and verify the staging URL
   is visually identical to
   https://web-staging-v-8e69.4631dc.up.azin.host/.
-- [ ] Playwright e2e: load `/`, assert hero headline text,
+- [x] Playwright e2e: load `/`, assert hero headline text,
   "Try for free" button links to `/signup`, pricing section has three
   plans, all internal anchor links work.
 

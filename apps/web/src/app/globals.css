@@ -20,6 +20,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-feature-settings: "ss01", "cv11";
+  overflow-x: hidden;
 }
 
 * {
