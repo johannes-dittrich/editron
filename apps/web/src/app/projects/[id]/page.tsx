@@ -135,7 +135,7 @@ function TranscriptPanel({
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${apiUrl()}/api/uploads/${uploadId}/transcript`)
+    fetch(`${apiUrl()}/api/uploads/${uploadId}/transcript`, { credentials: "include" })
       .then((r) => r.json())
       .then((data) => {
         setTranscript(
@@ -197,8 +197,8 @@ export default function ProjectDetailPage() {
   const fetchProject = useCallback(async () => {
     try {
       const [projRes, uploadsRes] = await Promise.all([
-        fetch(`${apiUrl()}/api/projects/${projectId}`),
-        fetch(`${apiUrl()}/api/projects/${projectId}/uploads`),
+        fetch(`${apiUrl()}/api/projects/${projectId}`, { credentials: "include" }),
+        fetch(`${apiUrl()}/api/projects/${projectId}/uploads`, { credentials: "include" }),
       ]);
       if (!projRes.ok) throw new Error("not found");
       const projData = await projRes.json();

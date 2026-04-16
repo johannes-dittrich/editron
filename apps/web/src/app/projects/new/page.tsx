@@ -158,6 +158,7 @@ function Step1({
       try {
         const res = await fetch(`${apiUrl()}/api/projects`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title }),
         });

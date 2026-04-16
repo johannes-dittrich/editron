@@ -129,7 +129,7 @@ export default function DashboardPage() {
   async function fetchProjects() {
     setState("loading");
     try {
-      const res = await fetch(`${apiUrl()}/api/projects`);
+      const res = await fetch(`${apiUrl()}/api/projects`, { credentials: "include" });
       if (!res.ok) throw new Error("fetch failed");
       const data = await res.json();
       setProjects(data);
