@@ -13,6 +13,10 @@ export const r2 = new S3Client({
     accessKeyId: R2_ACCESS_KEY_ID,
     secretAccessKey: R2_SECRET_ACCESS_KEY,
   },
+  // R2 doesn't support the CRC32 checksums that aws-sdk v3.729+ auto-adds.
+  // Without this, CompleteMultipartUpload hangs indefinitely.
+  requestChecksumCalculation: "WHEN_REQUIRED",
+  responseChecksumValidation: "WHEN_REQUIRED",
 });
 
 export type UploadKind = "source" | "reference" | "brief";
