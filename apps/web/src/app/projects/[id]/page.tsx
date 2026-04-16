@@ -196,18 +196,11 @@ export default function ProjectDetailPage() {
 
   const fetchProject = useCallback(async () => {
     try {
-      const [projRes, uploadsRes] = await Promise.all([
-        fetch(`${apiUrl()}/api/projects/${projectId}`),
-        fetch(`${apiUrl()}/api/projects/${projectId}/uploads`),
-      ]);
+      const projRes = await fetch(`${apiUrl()}/api/projects/${projectId}`);
       if (!projRes.ok) throw new Error("not found");
       const projData = await projRes.json();
       setProject(projData);
-
-      if (uploadsRes.ok) {
-        const uploadsData = await uploadsRes.json();
-        setUploads(uploadsData);
-      }
+      setUploads(projData.uploads ?? []);
       setLoading(false);
     } catch {
       setError("couldn't load this project.");
