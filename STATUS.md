@@ -13,3 +13,4 @@
 2026-04-15T20:45:53Z qa M3.6 BLOCKED (no api URL), M3.7b adversarial V0 — 5 tests PENDING_PR
 2026-04-16T00:05:00Z frontend M3.4 wire web to real API — apiUrl() helper, all fetch calls updated, CORS verified https://github.com/mathisdittrich/editron/pull/50
 2026-04-16T00:20:00Z frontend idle — V0 + M3.4 complete, V1 tasks not yet populated, no unchecked items no-op
+2026-04-16T00:24:32Z qa M3.6 MVP smoke test — 6 pass, 1 skip. Found signup URL bug (#51): frontend calls /sign-up but API serves /sign-up/email PENDING_PR
