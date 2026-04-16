@@ -48,7 +48,7 @@ test.describe("Login page", () => {
     await page.getByLabel("Email").fill("wrong@example.com");
     await page.getByLabel("Password").fill("wrongpassword");
 
-    await page.route("/api/auth/sign-in", (route) =>
+    await page.route("/api/auth/sign-in/email", (route) =>
       route.fulfill({
         status: 401,
         contentType: "application/json",
@@ -68,7 +68,7 @@ test.describe("Login page", () => {
     await page.getByLabel("Email").fill("alex@example.com");
     await page.getByLabel("Password").fill("password123");
 
-    await page.route("/api/auth/sign-in", (route) =>
+    await page.route("/api/auth/sign-in/email", (route) =>
       route.fulfill({
         status: 200,
         contentType: "application/json",
@@ -134,7 +134,7 @@ test.describe("Signup page", () => {
     await page.getByLabel("Email").fill("taken@example.com");
     await page.getByLabel("Password").fill("password123");
 
-    await page.route("/api/auth/sign-up", (route) =>
+    await page.route("/api/auth/sign-up/email", (route) =>
       route.fulfill({
         status: 409,
         contentType: "application/json",
@@ -155,7 +155,7 @@ test.describe("Signup page", () => {
     await page.getByLabel("Email").fill("new@example.com");
     await page.getByLabel("Password").fill("password123");
 
-    await page.route("/api/auth/sign-up", (route) =>
+    await page.route("/api/auth/sign-up/email", (route) =>
       route.fulfill({
         status: 201,
         contentType: "application/json",

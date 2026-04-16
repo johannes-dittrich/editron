@@ -2,8 +2,8 @@ import { http, HttpResponse, delay } from "msw";
 import { currentUser } from "./fixtures/users";
 
 export const handlers = [
-  // Auth: POST /api/auth/sign-in
-  http.post("/api/auth/sign-in", async ({ request }) => {
+  // Auth: POST /api/auth/sign-in/email
+  http.post("/api/auth/sign-in/email", async ({ request }) => {
     await delay(200);
     const body = (await request.json()) as {
       email?: string;
@@ -21,8 +21,8 @@ export const handlers = [
     );
   }),
 
-  // Auth: POST /api/auth/sign-up
-  http.post("/api/auth/sign-up", async ({ request }) => {
+  // Auth: POST /api/auth/sign-up/email
+  http.post("/api/auth/sign-up/email", async ({ request }) => {
     await delay(250);
     const body = (await request.json()) as {
       name?: string;
