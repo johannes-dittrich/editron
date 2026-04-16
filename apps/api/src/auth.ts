@@ -45,7 +45,7 @@ export const auth = betterAuth({
     cookiePrefix: "editron",
     defaultCookieAttributes: {
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       httpOnly: true,
     },
     database: {
