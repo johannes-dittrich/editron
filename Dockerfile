@@ -1,6 +1,6 @@
-# Single-stage monorepo build — next.js 14 on :8080.
-# Single stage avoids Azin builder's cross-stage COPY limits.
-# --no-frozen-lockfile tolerates lockfile drift from merged PRs.
+# Single-stage monorepo build for apps/web (standalone Next.js on :8080).
+# output: "standalone" pre-traces at build time so "Collecting build
+# traces" at the end is a no-op, avoiding OOM on Azin's builder.
 
 FROM node:20-alpine
 RUN apk add --no-cache libc6-compat
@@ -22,6 +22,11 @@ RUN NODE_ENV=development pnpm install --no-frozen-lockfile --ignore-scripts
 COPY . .
 RUN pnpm exec turbo run build --filter=@editron/web
 
+# standalone output: server.js + static + public in .next/standalone
+# Copy public + static into the standalone dir (Next doesn't copy them)
+RUN cp -r apps/web/public apps/web/.next/standalone/apps/web/public 2>/dev/null || true
+RUN cp -r apps/web/.next/static apps/web/.next/standalone/apps/web/.next/static
+
 EXPOSE 8080
-WORKDIR /app/apps/web
-CMD ["pnpm", "exec", "next", "start", "-H", "0.0.0.0", "-p", "8080"]
+WORKDIR /app/apps/web/.next/standalone/apps/web
+CMD ["node", "server.js"]
