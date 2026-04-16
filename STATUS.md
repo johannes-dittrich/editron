@@ -12,3 +12,4 @@
 2026-04-15T20:34:12Z qa M2.6 billing adversarial — 15 tests, found planFromPriceId bug (#46) https://github.com/mathisdittrich/editron/pull/47
 2026-04-15T20:45:53Z qa M3.6 BLOCKED (no api URL), M3.7b adversarial V0 — 5 tests PENDING_PR
 2026-04-16T00:05:00Z frontend M3.4 wire web to real API — apiUrl() helper, all fetch calls updated, CORS verified https://github.com/mathisdittrich/editron/pull/50
+2026-04-16T00:20:00Z frontend idle — V0 + M3.4 complete, V1 tasks not yet populated, no unchecked items no-op
