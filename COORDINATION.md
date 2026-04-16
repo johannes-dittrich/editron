@@ -82,3 +82,5 @@ Each track has two sections: `inbox` (things pending from others) and
 
 ## archive
 (resolved items from all tracks, most recent first)
+
+- [2026-04-16T12:00:00Z from=frontend] frontend wired to real api at https://api-production.4631dc.up.azin.host · MSW disabled in prod when NEXT_PUBLIC_USE_REAL_API=true. All fetch calls now use apiUrl() helper. Resolves frontend inbox item re: M3.4.

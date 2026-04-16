@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
+import { apiUrl } from "@/lib/api-url";
 
 const signupSchema = z.object({
   name: z.string().min(1, "name is required"),
@@ -37,7 +38,7 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/sign-up", {
+      const res = await fetch(`${apiUrl()}/api/auth/sign-up`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -164,7 +165,7 @@ export default function SignupPage() {
         <button
           type="button"
           onClick={() => {
-            window.location.href = "/api/auth/github";
+            window.location.href = `${apiUrl()}/api/auth/github`;
           }}
           className="flex w-full items-center justify-center gap-2 rounded-full border border-line bg-paper px-7 py-4 text-base font-medium text-ink hover:bg-paper-alt focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >

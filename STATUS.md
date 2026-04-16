@@ -11,3 +11,4 @@
 2026-04-15T20:18:10Z qa M2.5 Rules 11+12 — strategy gate (bug #42) + prefix isolation (9 tests) https://github.com/mathisdittrich/editron/pull/43
 2026-04-15T20:34:12Z qa M2.6 billing adversarial — 15 tests, found planFromPriceId bug (#46) https://github.com/mathisdittrich/editron/pull/47
 2026-04-15T20:45:53Z qa M3.6 BLOCKED (no api URL), M3.7b adversarial V0 — 5 tests PENDING_PR
+2026-04-16T00:05:00Z frontend M3.4 wire web to real API — apiUrl() helper, all fetch calls updated, CORS verified https://github.com/mathisdittrich/editron/pull/50

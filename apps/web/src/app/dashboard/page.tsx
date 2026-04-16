@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@editron/shared";
+import { apiUrl } from "@/lib/api-url";
 
 type FetchState = "loading" | "success" | "error";
 
@@ -96,7 +97,7 @@ function UserMenu() {
           data-testid="user-menu-dropdown"
         >
           <a
-            href="/api/auth/sign-out"
+            href={`${apiUrl()}/api/auth/sign-out`}
             className="block px-4 py-2 text-sm text-ink-soft hover:bg-paper-alt hover:text-ink"
             data-testid="sign-out-link"
           >
@@ -128,7 +129,7 @@ export default function DashboardPage() {
   async function fetchProjects() {
     setState("loading");
     try {
-      const res = await fetch("/api/projects");
+      const res = await fetch(`${apiUrl()}/api/projects`);
       if (!res.ok) throw new Error("fetch failed");
       const data = await res.json();
       setProjects(data);
