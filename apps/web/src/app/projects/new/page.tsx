@@ -12,10 +12,28 @@ const ACCEPTED_VIDEO_TYPES = [
   "video/mp4", "video/quicktime", "video/x-matroska", "video/webm",
 ];
 
+const VIDEO_HOSTS = [
+  "youtube.com", "youtu.be", "vimeo.com", "tiktok.com",
+  "twitter.com", "x.com", "loom.com",
+];
+function isVideoUrl(raw: string): boolean {
+  try {
+    const u = new URL(raw.trim());
+    if (!["http:", "https:"].includes(u.protocol)) return false;
+    const host = u.hostname.replace(/^www\./, "").toLowerCase();
+    if (VIDEO_HOSTS.some((h) => host === h || host.endsWith("." + h))) return true;
+    if (/\.(mp4|mov|mkv|webm|m4v)$/i.test(u.pathname)) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 type WizardState = {
   step: 1 | 2 | 3;
   projectId: string | null;
   title: string;
+  referenceUrl: string;
   brief: string;
   briefAudioBlob: Blob | null;
 };
@@ -24,6 +42,7 @@ type WizardAction =
   | { type: "SET_STEP"; step: 1 | 2 | 3 }
   | { type: "SET_PROJECT_ID"; id: string }
   | { type: "SET_TITLE"; title: string }
+  | { type: "SET_REFERENCE_URL"; url: string }
   | { type: "SET_BRIEF"; brief: string }
   | { type: "SET_BRIEF_AUDIO"; blob: Blob | null };
 
@@ -35,6 +54,8 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
       return { ...state, projectId: action.id };
     case "SET_TITLE":
       return { ...state, title: action.title };
+    case "SET_REFERENCE_URL":
+      return { ...state, referenceUrl: action.url };
     case "SET_BRIEF":
       return { ...state, brief: action.brief };
     case "SET_BRIEF_AUDIO":
@@ -135,6 +156,8 @@ function Step1({
 }) {
   const { dispatch: uploadDispatch } = useUploads();
   const [refFile, setRefFile] = useState<string | null>(null);
+  const [refMode, setRefMode] = useState<"link" | "upload">("link");
+  const [refUrlError, setRefUrlError] = useState<string | null>(null);
 
   async function handleRefFiles(files: File[]) {
     const file = files[0];
@@ -148,8 +171,8 @@ function Step1({
       status: "uploading",
     };
     uploadDispatch({ type: "ADD_FILE", payload: uploadFile });
-    // Simulate upload in background (MSW will handle real API)
-    simulateUpload(id, uploadDispatch);
+    setRefMode("upload");
+    realUpload(id, file, "reference", state.projectId, uploadDispatch);
   }
 
   async function handleNext() {
@@ -199,7 +222,68 @@ function Step1({
           <p className="mb-1.5 text-sm font-medium text-ink">
             Add a reference video <span className="text-ink-dim">(optional)</span>
           </p>
-          {refFile ? (
+          <p className="mb-3 text-xs leading-relaxed text-ink-dim">
+            Shows Editron the style, pacing, and tone you want. Paste a link
+            (YouTube, Vimeo, TikTok, Loom) or upload a file.
+          </p>
+
+          <div className="mb-3 inline-flex rounded-lg border border-line bg-paper p-1">
+            <button
+              type="button"
+              onClick={() => setRefMode("link")}
+              className={
+                "rounded-md px-3 py-1.5 text-xs font-medium transition " +
+                (refMode === "link"
+                  ? "bg-ink text-paper"
+                  : "text-ink-soft hover:text-ink")
+              }
+            >
+              Paste link
+            </button>
+            <button
+              type="button"
+              onClick={() => setRefMode("upload")}
+              className={
+                "rounded-md px-3 py-1.5 text-xs font-medium transition " +
+                (refMode === "upload"
+                  ? "bg-ink text-paper"
+                  : "text-ink-soft hover:text-ink")
+              }
+            >
+              Upload file
+            </button>
+          </div>
+
+          {refMode === "link" ? (
+            <div>
+              <input
+                type="url"
+                value={state.referenceUrl}
+                onChange={(e) => {
+                  dispatch({ type: "SET_REFERENCE_URL", url: e.target.value });
+                  setRefUrlError(null);
+                }}
+                onBlur={() => {
+                  const v = state.referenceUrl.trim();
+                  if (v && !isVideoUrl(v)) {
+                    setRefUrlError(
+                      "doesn't look like a video link — try a YouTube, Vimeo, TikTok, or Loom URL",
+                    );
+                  }
+                }}
+                placeholder="https://www.youtube.com/watch?v=…"
+                className="flex h-11 w-full rounded-lg border border-line bg-paper px-3 py-2 font-mono text-sm text-ink placeholder:text-ink-dim focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              />
+              {refUrlError ? (
+                <p className="mt-2 text-xs text-accent">{refUrlError}</p>
+              ) : null}
+              {state.referenceUrl && !refUrlError && isVideoUrl(state.referenceUrl) ? (
+                <p className="mt-2 text-xs text-ink-dim">
+                  ✓ ready. Editron will fetch this during the strategy step.
+                </p>
+              ) : null}
+            </div>
+          ) : refFile ? (
             <div className="rounded-lg border border-line bg-paper-alt px-4 py-3 text-sm text-ink">
               {refFile} — uploading…
             </div>
@@ -207,7 +291,7 @@ function Step1({
             <DropZone
               onFiles={handleRefFiles}
               label="Drop or click to upload"
-              hint="Shows Editron the style, pacing, and tone you want."
+              hint="Any .mp4, .mov, .mkv, .webm up to 2 GB."
               testId="ref-drop-zone"
             />
           )}
@@ -461,7 +545,7 @@ function Step3({ state }: { state: WizardState }) {
         status: "queued",
       };
       uploadDispatch({ type: "ADD_FILE", payload: uploadFile });
-      simulateUpload(id, uploadDispatch);
+      realUpload(id, file, "source", state.projectId, uploadDispatch);
     }
   }
 
@@ -531,23 +615,99 @@ function Step3({ state }: { state: WizardState }) {
   );
 }
 
-function simulateUpload(
+const PART_SIZE = 10 * 1024 * 1024; // 10 MB per part
+
+async function realUpload(
   id: string,
-  dispatch: React.Dispatch<{ type: "UPDATE_PROGRESS"; id: string; progress: number } | { type: "SET_STATUS"; id: string; status: UploadFile["status"] }>
+  file: File,
+  kind: "source" | "reference" | "brief_audio",
+  projectId: string | null,
+  dispatch: React.Dispatch<
+    | { type: "UPDATE_PROGRESS"; id: string; progress: number }
+    | { type: "SET_STATUS"; id: string; status: UploadFile["status"]; error?: string }
+  >,
 ) {
   dispatch({ type: "SET_STATUS", id, status: "uploading" });
-  let progress = 0;
-  const interval = setInterval(() => {
-    progress += 5 + Math.random() * 15;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(interval);
-      dispatch({ type: "UPDATE_PROGRESS", id, progress: 100 });
-      dispatch({ type: "SET_STATUS", id, status: "done" });
-    } else {
-      dispatch({ type: "UPDATE_PROGRESS", id, progress });
+  try {
+    // 1. initiate multipart upload
+    const initRes = await fetch(`${apiUrl()}/api/uploads/initiate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        projectId,
+        kind,
+        filename: file.name,
+        contentType: file.type || "video/mp4",
+        sizeBytes: file.size,
+      }),
+    });
+    if (!initRes.ok) {
+      const msg = await initRes.text().catch(() => "upload init failed");
+      dispatch({ type: "SET_STATUS", id, status: "error", error: msg });
+      return;
     }
-  }, 200 + Math.random() * 200);
+    const init = await initRes.json();
+    const uploadId = init.uploadId ?? init.id;
+    const partCount = Math.max(1, Math.ceil(file.size / PART_SIZE));
+
+    // 2. upload each part via signed URLs
+    const parts: { partNumber: number; etag: string }[] = [];
+    for (let i = 0; i < partCount; i++) {
+      const partNumber = i + 1;
+      const start = i * PART_SIZE;
+      const end = Math.min(start + PART_SIZE, file.size);
+      const blob = file.slice(start, end);
+
+      // get signed URL for this part
+      const urlRes = await fetch(`${apiUrl()}/api/uploads/${uploadId}/part-url`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ partNumber }),
+      });
+      if (!urlRes.ok) {
+        dispatch({ type: "SET_STATUS", id, status: "error", error: "failed to get part URL" });
+        return;
+      }
+      const { url: signedUrl } = await urlRes.json();
+
+      // PUT directly to R2
+      const putRes = await fetch(signedUrl, {
+        method: "PUT",
+        body: blob,
+      });
+      if (!putRes.ok) {
+        dispatch({ type: "SET_STATUS", id, status: "error", error: `part ${partNumber} upload failed` });
+        return;
+      }
+      const etag = putRes.headers.get("etag") ?? `"${partNumber}"`;
+      parts.push({ partNumber, etag: etag.replace(/"/g, "") });
+
+      dispatch({
+        type: "UPDATE_PROGRESS",
+        id,
+        progress: Math.round(((i + 1) / partCount) * 100),
+      });
+    }
+
+    // 3. complete multipart upload
+    const completeRes = await fetch(`${apiUrl()}/api/uploads/${uploadId}/complete`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ parts }),
+    });
+    if (!completeRes.ok) {
+      dispatch({ type: "SET_STATUS", id, status: "error", error: "complete failed" });
+      return;
+    }
+    dispatch({ type: "UPDATE_PROGRESS", id, progress: 100 });
+    dispatch({ type: "SET_STATUS", id, status: "done" });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "upload failed";
+    dispatch({ type: "SET_STATUS", id, status: "error", error: msg });
+  }
 }
 
 function WizardInner() {
@@ -555,6 +715,7 @@ function WizardInner() {
     step: 1,
     projectId: null,
     title: "",
+    referenceUrl: "",
     brief: "",
     briefAudioBlob: null,
   });
