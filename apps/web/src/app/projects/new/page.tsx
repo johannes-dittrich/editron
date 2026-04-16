@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useReducer, useState, useRef, useCallback, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { UploadsProvider, useUploads, type UploadFile } from "@/contexts/uploads";
+import { apiUrl } from "@/lib/api-url";
 
 const ACCEPTED_VIDEO = [".mp4", ".mov", ".mkv", ".webm", ".m4v"];
 const ACCEPTED_VIDEO_TYPES = [
@@ -155,7 +156,7 @@ function Step1({
     if (!state.projectId) {
       const title = state.title || `Untitled draft · ${new Date().toISOString().slice(0, 10)}`;
       try {
-        const res = await fetch("/api/projects", {
+        const res = await fetch(`${apiUrl()}/api/projects`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title }),

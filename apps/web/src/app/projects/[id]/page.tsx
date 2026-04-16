@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import type { Project, Upload } from "@editron/shared";
+import { apiUrl } from "@/lib/api-url";
 
 const INGEST_MESSAGES = [
   "sharpening the scissors...",
@@ -134,7 +135,7 @@ function TranscriptPanel({
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/uploads/${uploadId}/transcript`)
+    fetch(`${apiUrl()}/api/uploads/${uploadId}/transcript`)
       .then((r) => r.json())
       .then((data) => {
         setTranscript(
@@ -196,8 +197,8 @@ export default function ProjectDetailPage() {
   const fetchProject = useCallback(async () => {
     try {
       const [projRes, uploadsRes] = await Promise.all([
-        fetch(`/api/projects/${projectId}`),
-        fetch(`/api/projects/${projectId}/uploads`),
+        fetch(`${apiUrl()}/api/projects/${projectId}`),
+        fetch(`${apiUrl()}/api/projects/${projectId}/uploads`),
       ]);
       if (!projRes.ok) throw new Error("not found");
       const projData = await projRes.json();
