@@ -1,41 +1,34 @@
-// smooth nav highlight + waitlist form handler
+// Waitlist form handler — writes to localStorage for now.
+// TODO(waitlist-backend): POST to a real endpoint once it exists.
 document.addEventListener("DOMContentLoaded", () => {
-  // waitlist form
   const form = document.querySelector("#waitlist-form");
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const success = document.querySelector("#waitlist-success");
-      const data = Object.fromEntries(new FormData(form).entries());
-      try {
-        const stored = JSON.parse(localStorage.getItem("editron.waitlist") || "[]");
-        stored.push({ ...data, at: new Date().toISOString() });
-        localStorage.setItem("editron.waitlist", JSON.stringify(stored));
-      } catch (_) {}
-      form.reset();
-      if (success) {
-        success.classList.add("show");
-        setTimeout(() => success.classList.remove("show"), 6000);
-      }
-    });
-  }
+  const status = document.querySelector("#waitlist-status");
+  if (!form) return;
 
-  // docs active section highlight
-  const docsLinks = document.querySelectorAll(".docs-nav a[href^='#']");
-  if (docsLinks.length) {
-    const ids = Array.from(docsLinks).map((a) => a.getAttribute("href").slice(1));
-    const setActive = () => {
-      let current = ids[0];
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 120) current = id;
-      }
-      docsLinks.forEach((a) => {
-        a.style.color = a.getAttribute("href") === "#" + current ? "var(--text)" : "";
-        a.style.borderLeftColor = a.getAttribute("href") === "#" + current ? "var(--accent)" : "";
-      });
-    };
-    window.addEventListener("scroll", setActive, { passive: true });
-    setActive();
-  }
+  const setStatus = (msg, kind) => {
+    if (!status) return;
+    status.textContent = msg;
+    status.classList.remove("is-error", "is-ok");
+    if (kind) status.classList.add(kind);
+  };
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    const email = (data.email || "").trim();
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus("Please enter a valid email address.", "is-error");
+      return;
+    }
+
+    try {
+      const stored = JSON.parse(localStorage.getItem("editron.waitlist") || "[]");
+      stored.push({ email, at: new Date().toISOString() });
+      localStorage.setItem("editron.waitlist", JSON.stringify(stored));
+    } catch (_) {}
+
+    form.reset();
+    setStatus("You're on the list — we'll be in touch as seats open.", "is-ok");
+  });
 });
